@@ -35,6 +35,12 @@
   .guided-block { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 14px 16px; margin: 8px 0 20px 0; }
   .guided-question { font-family: Arial, sans-serif; font-size: 0.95rem; margin-bottom: 8px; }
 
+  .focus-block { background: var(--panel); border-left: 4px solid var(--gold); border-radius: 4px; padding: 12px 16px; margin: 10px 0 18px 0; font-family: Arial, sans-serif; }
+  .focus-block h4 { margin: 0 0 8px 0; font-size: 0.9rem; color: var(--accent); }
+  .focus-item { margin: 8px 0; }
+  .focus-item label { display: block; font-size: 0.88rem; margin-bottom: 3px; }
+  .focus-item input[type="text"] { width: 100%; padding: 7px 9px; font-family: Arial, sans-serif; font-size: 13.5px; border: 1px solid #ccc; border-radius: 4px; }
+
   .notes-box, textarea { width: 100%; min-height: 70px; font-family: inherit; font-size: 14.5px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
   textarea.big { min-height: 160px; }
   textarea.small { min-height: 55px; }
@@ -149,6 +155,30 @@
 <p>For every mule or horse furnished by me there must be 1000 good sized rails (logs) hauled, and the fence repaired if I so direct. All sharecroppers must haul rails (logs) and work on the fence whenever I may order. The wood must be split and the fence repaired before corn is planted. No cotton must be planted by sharecroppers on their home patches of land.</p>
 <p>No sharecropper is to work off the plantation when there is any work to be done on the land he has rented, or when his work is needed by me. Every sharecropper must be responsible for all farming gear placed in his hands, and if not returned must be paid for unless it is worn out by use.</p>
 <p>Nothing can be sold from their (sharecroppers&#8217;) crops until my rent is all paid, and all amounts they owe me are paid in full. I am to gin &amp; pack all of the cotton and charge every sharecropper an eighteenth of his part, the cropper to furnish his part of the bagging, ties, &amp; twine. The sale of every sharecropper&#8217;s part of the cotton to be made by me when and where I choose to sell, and after deducting all they owe me.</p>
+</div>
+
+<div class="focus-block">
+  <h4>Focus questions — find these directly in the text (no AI help needed here)</h4>
+  <div class="focus-item">
+    <label for="focus-contract-1">1. How many acres of land does the contract's terms apply to as one unit ("for every ___ acres")?</label>
+    <input type="text" id="focus-contract-1" placeholder="Your answer...">
+  </div>
+  <div class="focus-item">
+    <label for="focus-contract-2">2. If a sharecropper meets all the conditions, what share of the crop do they receive? What share if they don't?</label>
+    <input type="text" id="focus-contract-2" placeholder="Your answer...">
+  </div>
+  <div class="focus-item">
+    <label for="focus-contract-3">3. For every mule or horse the landowner furnishes, how many rails must the sharecropper haul?</label>
+    <input type="text" id="focus-contract-3" placeholder="Your answer...">
+  </div>
+  <div class="focus-item">
+    <label for="focus-contract-4">4. What has to happen before sharecroppers are allowed to plant corn?</label>
+    <input type="text" id="focus-contract-4" placeholder="Your answer...">
+  </div>
+  <div class="focus-item">
+    <label for="focus-contract-5">5. What fraction of the sharecropper's cotton does the landowner charge as a ginning and packing fee?</label>
+    <input type="text" id="focus-contract-5" placeholder="Your answer...">
+  </div>
 </div>
 
 <div class="guided-block">
@@ -269,6 +299,26 @@ And be ashamed&#8212;</p>
 <p>I, too, am America.</p>
 </div>
 
+<div class="focus-block">
+  <h4>Focus questions — find these directly in the poem (no AI help needed here)</h4>
+  <div class="focus-item">
+    <label for="focus-poem-1">1. In the first stanza, where is the speaker sent to eat, and why?</label>
+    <input type="text" id="focus-poem-1" placeholder="Your answer...">
+  </div>
+  <div class="focus-item">
+    <label for="focus-poem-2">2. What single word starts the second stanza, and what is the speaker predicting will be different then?</label>
+    <input type="text" id="focus-poem-2" placeholder="Your answer...">
+  </div>
+  <div class="focus-item">
+    <label for="focus-poem-3">3. According to the third stanza, how will people react when they finally "see" the speaker?</label>
+    <input type="text" id="focus-poem-3" placeholder="Your answer...">
+  </div>
+  <div class="focus-item">
+    <label for="focus-poem-4">4. Compare the poem's first line to its last line. What single word changes, and why might that change matter?</label>
+    <input type="text" id="focus-poem-4" placeholder="Your answer...">
+  </div>
+</div>
+
 <div class="guided-block">
   <div class="guided-question"><strong>Guiding question:</strong> Hughes writes "Tomorrow, I'll be at the table" — not today. Connect this poem back to the 85% statistic and your ledger. What "table" is he talking about, and how far away was it in 1882?</div>
   <textarea class="small" id="answer-poem" placeholder="Your answer..."></textarea>
@@ -319,7 +369,19 @@ const VOCAB_LIST = [
 ];
 const VOCAB_REQUIRED = Math.ceil(VOCAB_LIST.length * 0.5); // 3 of 6
 const GUIDED_KEYS = ['contract', 'ledger', 'narrative', 'poem'];
+const FOCUS_CONTRACT_KEYS = ['focus-contract-1', 'focus-contract-2', 'focus-contract-3', 'focus-contract-4', 'focus-contract-5'];
+const FOCUS_POEM_KEYS = ['focus-poem-1', 'focus-poem-2', 'focus-poem-3', 'focus-poem-4'];
 const MAX_CHECK_ATTEMPTS = 3;
+
+function collectFocusAnswers(keys) {
+  const out = {};
+  keys.forEach(id => { const el = document.getElementById(id); if (el) out[id] = el.value; });
+  return out;
+}
+function restoreFocusAnswers(keys, data) {
+  if (!data) return;
+  keys.forEach(id => { const el = document.getElementById(id); if (el && data[id] !== undefined) el.value = data[id]; });
+}
 
 // Correct ledger values
 const LEDGER_ANSWERS = {
@@ -398,7 +460,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ---------- Paste blocking ----------
 ['main-response', 'other-notes-contract', 'other-notes-narrative',
- 'answer-contract', 'answer-ledger', 'answer-narrative', 'answer-poem'].forEach(id => {
+ 'answer-contract', 'answer-ledger', 'answer-narrative', 'answer-poem',
+ 'focus-contract-1', 'focus-contract-2', 'focus-contract-3', 'focus-contract-4', 'focus-contract-5',
+ 'focus-poem-1', 'focus-poem-2', 'focus-poem-3', 'focus-poem-4'].forEach(id => {
   document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -687,7 +751,9 @@ let saveTimer = null;
 function scheduleAutoSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveState, 4000); }
 ['other-notes-contract', 'other-notes-narrative', 'main-response',
  'answer-contract', 'answer-ledger', 'answer-narrative', 'answer-poem',
- 'input-share-bales', 'input-share-value', 'input-ginning-fee', 'input-balance'].forEach(id => {
+ 'input-share-bales', 'input-share-value', 'input-ginning-fee', 'input-balance',
+ 'focus-contract-1', 'focus-contract-2', 'focus-contract-3', 'focus-contract-4', 'focus-contract-5',
+ 'focus-poem-1', 'focus-poem-2', 'focus-poem-3', 'focus-poem-4'].forEach(id => {
   document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', scheduleAutoSave);
@@ -717,7 +783,9 @@ function collectState() {
     ledgerComplete: isLedgerComplete(),
     otherNotes: {
       contract: document.getElementById('other-notes-contract').value,
-      narrative: document.getElementById('other-notes-narrative').value
+      narrative: document.getElementById('other-notes-narrative').value,
+      focusContract: collectFocusAnswers(FOCUS_CONTRACT_KEYS),
+      focusPoem: collectFocusAnswers(FOCUS_POEM_KEYS)
     },
     vocabUsed: getUsedVocab(),
     vocabList: VOCAB_LIST.map(v => v.term)
@@ -740,6 +808,8 @@ async function loadState() {
   const notes = data.otherNotes || {};
   document.getElementById('other-notes-contract').value = notes.contract || '';
   document.getElementById('other-notes-narrative').value = notes.narrative || '';
+  restoreFocusAnswers(FOCUS_CONTRACT_KEYS, notes.focusContract);
+  restoreFocusAnswers(FOCUS_POEM_KEYS, notes.focusPoem);
 
   renderVocabChecklist(getUsedVocab());
   status.textContent = 'Work loaded.';
@@ -808,7 +878,9 @@ function downloadWork() {
 
     <h2>Document 1: The Contract (with your highlights)</h2>
     <div class="p-doc">${document.getElementById('doc-contract').innerHTML}</div>
-    <div class="p-label">Your answer</div>
+    <div class="p-label">Focus question answers</div>
+    <div class="p-block">${FOCUS_CONTRACT_KEYS.map((id, i) => (i + 1) + '. ' + esc(val(id))).join('\n') || '(not yet answered)'}</div>
+    <div class="p-label">Guiding question answer</div>
     <div class="p-block">${esc(val('answer-contract')) || '(not yet answered)'}</div>
     <div class="p-label">Other notes</div>
     <div class="p-block">${esc(val('other-notes-contract')) || '(none)'}</div>
@@ -829,7 +901,9 @@ Final balance: $${esc(val('input-balance'))}</div>
     <div class="p-block">${esc(val('other-notes-narrative')) || '(none)'}</div>
 
     <h2>Document 4: "I, Too" by Langston Hughes</h2>
-    <div class="p-label">Your answer</div>
+    <div class="p-label">Focus question answers</div>
+    <div class="p-block">${FOCUS_POEM_KEYS.map((id, i) => (i + 1) + '. ' + esc(val(id))).join('\n') || '(not yet answered)'}</div>
+    <div class="p-label">Guiding question answer</div>
     <div class="p-block">${esc(val('answer-poem')) || '(not yet answered)'}</div>
 
     <h2>Your Analysis</h2>
