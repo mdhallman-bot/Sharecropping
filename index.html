@@ -41,6 +41,16 @@
   .focus-item label { display: block; font-size: 0.88rem; margin-bottom: 3px; }
   .focus-item input[type="text"] { width: 100%; padding: 7px 9px; font-family: Arial, sans-serif; font-size: 13.5px; border: 1px solid #ccc; border-radius: 4px; }
 
+  .vocab-preview { background: #fff8e6; border: 1px dashed var(--gold); border-radius: 4px; padding: 10px 14px; margin: 10px 0; font-family: Arial, sans-serif; font-size: 0.88rem; }
+  .vocab-preview strong { color: var(--accent); }
+  .vocab-preview .vp-term { margin: 3px 0; }
+
+  .frames-toggle { background: none; border: none; color: var(--accent); text-decoration: underline; padding: 2px 0; font-size: 0.82rem; cursor: pointer; margin: 2px 0; }
+  .frames-toggle:hover { background: none; color: var(--gold); }
+  .frames-panel { display: none; background: #fff8e6; border: 1px dashed var(--gold); padding: 10px 14px; margin-top: 6px; font-family: Arial, sans-serif; font-size: 0.88rem; }
+  .frames-panel.open { display: block; }
+  .frames-panel p { margin: 5px 0; }
+
   .notes-box, textarea { width: 100%; min-height: 70px; font-family: inherit; font-size: 14.5px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
   textarea.big { min-height: 160px; }
   textarea.small { min-height: 55px; }
@@ -145,6 +155,11 @@
 <!-- ============ DOCUMENT 1: THE CONTRACT ============ -->
 <h2>Document 1: A Sharecropping Contract, 1882</h2>
 <div class="doc-meta">Grimes Family Papers, North Carolina, 1882. Source: Digital Inquiry Group (inquirygroup.org).</div>
+<div class="vocab-preview">
+  <strong>Preview these words before you read:</strong>
+  <div class="vp-term"><strong>Sharecropping</strong> — a farming system where a tenant works someone else's land in exchange for a share of the crop instead of wages.</div>
+  <div class="vp-term"><strong>Exploitation</strong> — using someone unfairly for your own benefit, especially their labor.</div>
+</div>
 <p style="font-family:Arial, sans-serif; font-size:0.88rem;">Select any text, then click a color: <strong>green</strong> for something the sharecropper is promised or granted, <strong>red</strong> for something denied, restricted, or controlled by the landowner.</p>
 <button class="highlight-btn green" onclick="applyHighlight('green')">Highlight: Claimed</button>
 <button class="highlight-btn red" onclick="applyHighlight('red')">Highlight: Denied/Blocked</button>
@@ -185,6 +200,11 @@
   <div class="guided-question"><strong>Guiding question:</strong> According to this contract, who decides what gets grown, who decides when the crop gets sold, and who bears the risk if the harvest is poor? Point to specific language.</div>
   <textarea class="small" id="answer-contract" placeholder="Your answer..."></textarea>
   <div class="try-first-note">Write your own answer first — the check button unlocks after a few sentences.</div>
+  <button type="button" class="frames-toggle" onclick="toggleFrames('frames-contract')">Need a sentence starter?</button>
+  <div class="frames-panel" id="frames-contract">
+    <p>"The contract shows that the ___ decides what gets grown, because it says '___.'"</p>
+    <p>"According to the contract, the sharecropper is responsible for ___, while the landowner controls ___."</p>
+  </div>
   <button id="checkbtn-contract" onclick="checkGuided('contract','Sharecropping Contract','doc-contract','Who decides what gets grown, who decides when it sells, and who bears the risk of a poor harvest?')">Check my understanding</button>
   <div class="helper-panel" id="feedback-contract" style="display:none;"></div>
 </div>
@@ -201,6 +221,11 @@
 
 <!-- ============ DOCUMENT 2: THE LEDGER ============ -->
 <h2>Document 2: Build the Ledger</h2>
+<div class="vocab-preview">
+  <strong>Preview these words before you build the ledger:</strong>
+  <div class="vp-term"><strong>Debt-Peonage</strong> — being forced to keep working for someone because you owe them money you can't pay off.</div>
+  <div class="vp-term"><strong>Systemic</strong> — built into the whole system itself, not just one person's bad choice.</div>
+</div>
 <p style="font-family:Arial, sans-serif; font-size:0.95rem;">
   Use the contract's own terms above to work out what a real family would have taken home. Each field
   checks itself — try your own math first.
@@ -247,6 +272,11 @@
   <div class="guided-question"><strong>Guiding question:</strong> This family worked all year and brought in a full harvest — no drought, no disaster. Why did they still end the year owing money? Use a specific number from your ledger.</div>
   <textarea class="small" id="answer-ledger" placeholder="Your answer..."></textarea>
   <div class="try-first-note">Complete the ledger above first — the check button unlocks after a few sentences here.</div>
+  <button type="button" class="frames-toggle" onclick="toggleFrames('frames-ledger')">Need a sentence starter?</button>
+  <div class="frames-panel" id="frames-ledger">
+    <p>"The family ended the year in debt because their $___ share was reduced by $___ in ___ and $___ in ___."</p>
+    <p>"Even though they harvested a full crop, the numbers show ___."</p>
+  </div>
   <button id="checkbtn-ledger" onclick="checkGuided('ledger','The Ledger','LEDGER','Why did this family end the year in debt despite a full harvest, using a specific number?')">Check my understanding</button>
   <div class="helper-panel" id="feedback-ledger-reflect" style="display:none;"></div>
 </div>
@@ -254,6 +284,11 @@
 <!-- ============ DOCUMENT 3: WPA NARRATIVE ============ -->
 <h2>Document 3: A Sharecropper's Own Words</h2>
 <div class="doc-meta">James Lucas, born 1833, Adams County, Mississippi. Interviewed in the 1930s as part of the WPA Federal Writers' Project — a first-person account recorded decades after emancipation. Public domain (U.S. federal government work).</div>
+<div class="vocab-preview">
+  <strong>Preview these words before you read:</strong>
+  <div class="vp-term"><strong>Inequity</strong> — unfairness, especially unequal treatment baked into rules or structures.</div>
+  <div class="vp-term"><strong>Exploitation</strong> — using someone unfairly for your own benefit, especially their labor.</div>
+</div>
 <p style="font-family:Arial, sans-serif; font-size:0.88rem;">Highlight the same way as above.</p>
 <button class="highlight-btn green" onclick="applyHighlight('green')">Highlight: Claimed</button>
 <button class="highlight-btn red" onclick="applyHighlight('red')">Highlight: Denied/Blocked</button>
@@ -267,6 +302,11 @@
   <div class="guided-question"><strong>Guiding question:</strong> James Lucas says sharecropping "wuzn't much different from slavery." Using your ledger from Document 2 as evidence, explain one specific way the economics of the system back up his claim.</div>
   <textarea class="small" id="answer-narrative" placeholder="Your answer..."></textarea>
   <div class="try-first-note">Write your own answer first — the check button unlocks after a few sentences.</div>
+  <button type="button" class="frames-toggle" onclick="toggleFrames('frames-narrative')">Need a sentence starter?</button>
+  <div class="frames-panel" id="frames-narrative">
+    <p>"James Lucas's words show that sharecropping was similar to slavery because ___."</p>
+    <p>"One number from my ledger that supports this is $___, because ___."</p>
+  </div>
   <button id="checkbtn-narrative" onclick="checkGuided('narrative','James Lucas Narrative','doc-narrative','What specific economic evidence from the ledger backs up his claim?')">Check my understanding</button>
   <div class="helper-panel" id="feedback-narrative" style="display:none;"></div>
 </div>
@@ -277,6 +317,11 @@
 <!-- ============ DOCUMENT 4: HUGHES POEM ============ -->
 <h2>Document 4: "I, Too" — Langston Hughes (1926)</h2>
 <div class="doc-meta">Public domain (published 1926). Hughes wrote this decades after Reconstruction, but the promise-vs-reality gap it describes is the same one this unit has been tracing since Day 2.</div>
+<div class="vocab-preview">
+  <strong>Preview these words before you read:</strong>
+  <div class="vp-term"><strong>Disenfranchisement</strong> — being stripped of rights or power, especially the right to vote or act freely.</div>
+  <div class="vp-term"><strong>Inequity</strong> — unfairness, especially unequal treatment baked into rules or structures.</div>
+</div>
 
 <div class="source-text" id="doc-poem" contenteditable="true" spellcheck="false">
 <p>I, too, sing America.<br>
@@ -323,6 +368,11 @@ And be ashamed&#8212;</p>
   <div class="guided-question"><strong>Guiding question:</strong> Hughes writes "Tomorrow, I'll be at the table" — not today. Connect this poem back to the 85% statistic and your ledger. What "table" is he talking about, and how far away was it in 1882?</div>
   <textarea class="small" id="answer-poem" placeholder="Your answer..."></textarea>
   <div class="try-first-note">Write your own answer first — the check button unlocks after a few sentences.</div>
+  <button type="button" class="frames-toggle" onclick="toggleFrames('frames-poem')">Need a sentence starter?</button>
+  <div class="frames-panel" id="frames-poem">
+    <p>"The 'table' in the poem represents ___."</p>
+    <p>"In 1882, this was still far away because ___."</p>
+  </div>
   <button id="checkbtn-poem" onclick="checkGuided('poem','I Too — Langston Hughes','doc-poem','What table is Hughes talking about, and how far away was it in 1882?')">Check my understanding</button>
   <div class="helper-panel" id="feedback-poem" style="display:none;"></div>
 </div>
@@ -342,6 +392,11 @@ And be ashamed&#8212;</p>
 </p>
 <textarea class="big" id="main-response" placeholder="Your analysis..."></textarea>
 <div class="try-first-note">Write your own draft first — the check button unlocks after a bit more writing.</div>
+<button type="button" class="frames-toggle" onclick="toggleFrames('frames-analysis')">Need a sentence starter?</button>
+<div class="frames-panel" id="frames-analysis">
+  <p>"One economic change after Reconstruction was ___, which affected African Americans by ___."</p>
+  <p>"The strongest evidence for this is ___ from the [contract / ledger / narrative / poem], because ___."</p>
+</div>
 <button id="checkbtn-analysis" onclick="checkAnalysis()">Check my reasoning so far</button>
 <div class="helper-panel" id="feedback-analysis" style="display:none;"></div>
 
@@ -395,6 +450,12 @@ const LEDGER_TOLERANCE = 0.5;
 let struggleLevels = {};
 let guidedAttempts = {};
 let ledgerCorrectState = {};
+
+// ---------- Sentence frames toggle (available to everyone, not labeled) ----------
+function toggleFrames(id) {
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.toggle('open');
+}
 
 // ---------- Vocabulary checklist ----------
 function renderVocabChecklist(usedTerms) {
