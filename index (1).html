@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 5: The Economics of Sharecropping</title>
+<style>
+  :root {
+    --ink: #2a2a2a; --paper: #faf8f3; --accent: #6b5b3e; --gold: #b08d57;
+    --green: #cfead0; --green-strong: #4a8f52; --red: #f3d2ce; --red-strong: #b8493d; --panel: #f4f0e8;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.6; color: var(--ink); background: #fff; }
+  h1 { font-family: Arial, sans-serif; font-size: 1.5rem; margin-bottom: 4px; }
+  h2 { font-family: Arial, sans-serif; font-size: 1.15rem; margin-top: 2.2em; border-bottom: 2px solid var(--gold); padding-bottom: 4px; }
+  h3 { font-family: Arial, sans-serif; font-size: 1rem; margin: 1em 0 4px 0; }
+  .subtitle { color: #555; font-family: Arial, sans-serif; font-size: 0.95rem; margin-bottom: 1.2em; }
+  .rubric-note { background: var(--panel); border-left: 4px solid var(--accent); padding: 12px 16px; font-family: Arial, sans-serif; font-size: 0.88rem; }
+  .id-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: var(--panel); padding: 12px 16px; margin: 16px 0; border-radius: 4px; }
+  .id-bar input { padding: 6px 8px; font-size: 14px; font-family: Arial, sans-serif; }
+  button { font-family: Arial, sans-serif; padding: 8px 14px; font-size: 13.5px; cursor: pointer; border: 1px solid var(--accent); background: #fff; color: var(--accent); border-radius: 4px; margin: 4px 6px 4px 0; }
+  button:hover { background: var(--accent); color: #fff; }
+  button.primary { background: var(--accent); color: #fff; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .highlight-btn.green { border-color: var(--green-strong); color: var(--green-strong); }
+  .highlight-btn.green:hover { background: var(--green-strong); color: #fff; }
+  .highlight-btn.red { border-color: var(--red-strong); color: var(--red-strong); }
+  .highlight-btn.red:hover { background: var(--red-strong); color: #fff; }
+
+  .source-text { background: var(--paper); padding: 14px 18px; border-left: 4px solid var(--gold); margin: 10px 0; font-size: 1.02rem; }
+  .source-text mark { background: transparent; }
+  .doc-meta { font-family: Arial, sans-serif; font-size: 0.85rem; color: #555; margin-bottom: 6px; }
+  .clause-label { font-family: Arial, sans-serif; font-weight: bold; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.03em; }
+
+  .guided-block { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 14px 16px; margin: 8px 0 20px 0; }
+  .guided-question { font-family: Arial, sans-serif; font-size: 0.95rem; margin-bottom: 8px; }
+
+  .notes-box, textarea { width: 100%; min-height: 70px; font-family: inherit; font-size: 14.5px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+  textarea.big { min-height: 160px; }
+  textarea.small { min-height: 55px; }
+
+  .helper-panel { background: var(--panel); border-left: 4px solid var(--accent); padding: 12px 16px; margin-top: 8px; white-space: pre-wrap; font-family: Arial, sans-serif; font-size: 0.92rem; }
+  .locked { color: #999; font-style: italic; }
+
+  .stat-banner { background: #2a2a2a; color: #faf8f3; padding: 18px 20px; border-radius: 6px; font-family: Arial, sans-serif; margin: 14px 0; }
+  .stat-banner .big-num { font-size: 2.1rem; font-weight: bold; color: #e8c78a; }
+
+  .vocab-checklist { display: flex; gap: 8px; flex-wrap: wrap; font-family: Arial, sans-serif; font-size: 0.85rem; margin: 8px 0; }
+  .vocab-chip { padding: 4px 10px; border-radius: 12px; border: 1px solid #ccc; background: #eee; color: #777; cursor: pointer; }
+  .vocab-chip:hover { border-color: var(--accent); }
+  .vocab-chip.used { background: var(--green); border-color: var(--green-strong); color: #245c29; font-weight: bold; }
+  .vocab-definition { display: none; font-family: Arial, sans-serif; font-size: 0.85rem; background: var(--panel); padding: 8px 12px; border-radius: 4px; margin-top: 6px; }
+  .vocab-definition.show { display: block; }
+  .vocab-status { font-family: Arial, sans-serif; font-size: 0.85rem; margin-top: 4px; }
+
+  .try-first-note { font-family: Arial, sans-serif; font-size: 0.78rem; color: #888; margin: 4px 0; }
+  .paste-warning { color: #a33; font-size: 12.5px; margin-top: 4px; font-family: Arial, sans-serif; }
+  .save-indicator { font-family: Arial, sans-serif; font-size: 0.8rem; color: #888; margin-top: 4px; }
+
+  .completion-box { margin-top: 14px; padding: 14px 18px; border-radius: 4px; font-family: Arial, sans-serif; }
+  .completion-box.pass { background: #e4f4e6; border-left: 4px solid var(--green-strong); }
+  .completion-box.incomplete { background: #fdf1e4; border-left: 4px solid #c98a2c; }
+  .completion-box ul { margin: 6px 0 0 0; padding-left: 18px; font-size: 0.85rem; }
+
+  .mock-banner { background: #eef1fb; border-left: 4px solid #4a5fa8; padding: 10px 16px; font-family: Arial, sans-serif; font-size: 0.85rem; margin: 16px 0 10px 0; }
+  .mock-cards { display: flex; gap: 14px; flex-wrap: wrap; }
+  .mock-card { flex: 1; min-width: 260px; background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 14px 16px; font-family: Arial, sans-serif; }
+  .mock-card h4 { margin: 0 0 4px 0; font-size: 0.95rem; }
+  .mock-card .range { font-weight: bold; color: #4a5fa8; margin-bottom: 6px; }
+  .mock-card .improve { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ccc; font-size: 0.85rem; }
+
+  /* ---------- Ledger ---------- */
+  .ledger-wrap { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 16px 20px; margin: 12px 0; font-family: Arial, sans-serif; }
+  .ledger-givens { background: var(--panel); padding: 12px 16px; border-radius: 4px; margin-bottom: 14px; font-size: 0.92rem; }
+  .ledger-givens ul { margin: 6px 0 0 0; padding-left: 18px; }
+  .ledger-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 10px 0; padding: 10px; border-radius: 4px; background: #fafafa; border: 1px solid #eee; }
+  .ledger-row label { flex: 1; min-width: 260px; font-size: 0.92rem; }
+  .ledger-row input { width: 110px; padding: 6px 8px; font-family: Arial, sans-serif; }
+  .ledger-row .ledger-feedback { font-size: 0.85rem; font-weight: bold; min-width: 90px; }
+  .ledger-row.correct { border-color: var(--green-strong); background: #f1faf1; }
+  .ledger-row.correct .ledger-feedback { color: var(--green-strong); }
+  .ledger-row.wrong { border-color: var(--red-strong); background: #fdf3f2; }
+  .ledger-row.wrong .ledger-feedback { color: var(--red-strong); }
+  .ledger-balance { font-size: 1.3rem; font-weight: bold; margin-top: 10px; padding: 10px 14px; border-radius: 4px; }
+  .ledger-balance.negative { background: #fdf3f2; color: var(--red-strong); }
+  .ledger-balance.positive { background: #f1faf1; color: var(--green-strong); }
+
+  @media print {
+    button, .id-bar { display: none !important; }
+    body.printing > *:not(#print-summary) { display: none !important; }
+    #print-summary { display: block !important; }
+  }
+  #print-summary { display: none; font-family: Georgia, serif; }
+  #print-summary h2 { border-bottom: 1px solid #999; margin-top: 1.4em; }
+  #print-summary .p-block { white-space: pre-wrap; margin: 6px 0 14px 0; }
+  #print-summary .p-doc { background: var(--paper); padding: 10px 14px; border-left: 3px solid var(--gold); margin: 8px 0; }
+  #print-summary .p-label { font-family: Arial, sans-serif; font-weight: bold; font-size: 0.85rem; color: var(--accent); margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Day 5: The Economics of Sharecropping</h1>
+<div class="subtitle">Unit 1: Reconstruction &amp; the Rise of Jim Crow — SQ2 Engage / Launch</div>
+
+<div class="rubric-note">
+  <strong>What this feeds into:</strong> Today's work is a <strong>completion grade</strong> — did you do the
+  thinking, not a number score. It's practice for two criteria on the APS Writing Rubric you'll be scored on
+  later this unit: <strong>Use of Evidence</strong> and <strong>Analysis and Reasoning</strong>. At the end
+  you'll get a labeled <em>practice preview</em> of how your work would score on those two criteria — that's
+  feedback to help you improve, not your grade for today.
+</div>
+
+<div class="id-bar">
+  <label for="student-id">Your Name:</label>
+  <input id="student-id" type="text" placeholder="e.g. Jamie Smith">
+  <button onclick="loadState()">Load my saved work</button>
+  <span id="load-status" class="save-indicator"></span>
+</div>
+<div class="try-first-note" style="margin-top:-8px;">Use your first and last name, spelled the same way every time — this is how your work is found and saved.</div>
+
+<!-- ============ FRAMING ============ -->
+<h2>Before you start</h2>
+<p style="font-family:Arial, sans-serif; font-size:0.95rem;">
+  Back on Day 2, the Freedmen's Bureau material raised a promise that never fully happened: <strong>40 acres and
+  a mule</strong> — land of their own for formerly enslaved families. It never came. Here's what came instead.
+</p>
+<div class="stat-banner">
+  <div class="big-num">85%</div>
+  of Black farmers in Mississippi in 1900 did <strong>not</strong> own the land they farmed. (Mississippi
+  Department of Archives and History.) Most were sharecroppers or tenants — the rate varied some state to
+  state, but this was the rule across the South, not the exception.
+</div>
+<p style="font-family:Arial, sans-serif; font-size:0.95rem;">
+  Today you'll read the actual contract that governed a family in that 85%, build the numbers yourself to see
+  exactly how the math worked against them, then read one person's own words about living it, and a poem that
+  answers back.
+</p>
+
+<!-- ============ DOCUMENT 1: THE CONTRACT ============ -->
+<h2>Document 1: A Sharecropping Contract, 1882</h2>
+<div class="doc-meta">Grimes Family Papers, North Carolina, 1882. Source: Digital Inquiry Group (inquirygroup.org).</div>
+<p style="font-family:Arial, sans-serif; font-size:0.88rem;">Select any text, then click a color: <strong>green</strong> for something the sharecropper is promised or granted, <strong>red</strong> for something denied, restricted, or controlled by the landowner.</p>
+<button class="highlight-btn green" onclick="applyHighlight('green')">Highlight: Claimed</button>
+<button class="highlight-btn red" onclick="applyHighlight('red')">Highlight: Denied/Blocked</button>
+<button onclick="applyHighlight(null)">Clear highlight</button>
+
+<div class="source-text" id="doc-contract" contenteditable="true" spellcheck="false">
+<p>To every one applying to rent land, the following conditions must be read, and agreed to: For every 30 acres of land (rented by sharecroppers), I agree to furnish the mule team, plow, and farming implements. The sharecroppers are to have half of the cotton, corn, peas, pumpkins, and potatoes they grow if the following conditions are complied with, but&#8212;if not&#8212;they are to have only two-fifths.</p>
+<p>For every mule or horse furnished by me there must be 1000 good sized rails (logs) hauled, and the fence repaired if I so direct. All sharecroppers must haul rails (logs) and work on the fence whenever I may order. The wood must be split and the fence repaired before corn is planted. No cotton must be planted by sharecroppers on their home patches of land.</p>
+<p>No sharecropper is to work off the plantation when there is any work to be done on the land he has rented, or when his work is needed by me. Every sharecropper must be responsible for all farming gear placed in his hands, and if not returned must be paid for unless it is worn out by use.</p>
+<p>Nothing can be sold from their (sharecroppers&#8217;) crops until my rent is all paid, and all amounts they owe me are paid in full. I am to gin &amp; pack all of the cotton and charge every sharecropper an eighteenth of his part, the cropper to furnish his part of the bagging, ties, &amp; twine. The sale of every sharecropper&#8217;s part of the cotton to be made by me when and where I choose to sell, and after deducting all they owe me.</p>
+</div>
+
+<div class="guided-block">
+  <div class="guided-question"><strong>Guiding question:</strong> According to this contract, who decides what gets grown, who decides when the crop gets sold, and who bears the risk if the harvest is poor? Point to specific language.</div>
+  <textarea class="small" id="answer-contract" placeholder="Your answer..."></textarea>
+  <div class="try-first-note">Write your own answer first — the check button unlocks after a few sentences.</div>
+  <button id="checkbtn-contract" onclick="checkGuided('contract','Sharecropping Contract','doc-contract','Who decides what gets grown, who decides when it sells, and who bears the risk of a poor harvest?')">Check my understanding</button>
+  <div class="helper-panel" id="feedback-contract" style="display:none;"></div>
+</div>
+
+<div>
+  <label for="question-contract" style="font-family:Arial, sans-serif; font-size:0.88rem;">Still stuck on something in this document? Ask here:</label>
+  <input type="text" id="question-contract" style="width:100%; padding:8px; margin:6px 0; font-family:inherit;" placeholder="e.g. what does 'gin and pack' mean?">
+  <button id="ask-contract-btn" onclick="askHelp('contract')">Ask for open-ended help</button>
+</div>
+<div class="helper-panel" id="helper-contract" style="display:none;"></div>
+
+<h3>Other notes on this document (optional, just for you)</h3>
+<textarea class="notes-box" id="other-notes-contract" placeholder="Anything else you want to jot down..."></textarea>
+
+<!-- ============ DOCUMENT 2: THE LEDGER ============ -->
+<h2>Document 2: Build the Ledger</h2>
+<p style="font-family:Arial, sans-serif; font-size:0.95rem;">
+  Use the contract's own terms above to work out what a real family would have taken home. Each field
+  checks itself — try your own math first.
+</p>
+
+<div class="ledger-wrap">
+  <div class="ledger-givens">
+    <strong>The situation:</strong>
+    <ul>
+      <li>A family rents 30 acres under this exact contract and hauls their rails/repairs their fence as required, so they qualify for the full <strong>half</strong> share (not two-fifths).</li>
+      <li>At harvest, their 30 acres produced <strong>6 bales of cotton</strong> (a bale = 500 lbs).</li>
+      <li>Cotton was selling for about <strong>$45 per bale</strong> in 1882.</li>
+      <li>Per the contract, the landowner's gin charges <strong>1/18 of the sharecropper's part</strong> for ginning and packing.</li>
+      <li>Over the year, the family bought food, cloth, and tool repairs on credit from the plantation store: <strong>$150</strong> total.</li>
+    </ul>
+  </div>
+
+  <div class="ledger-row" id="row-share-bales">
+    <label>1. The family's share of the harvest, in bales (half of 6):</label>
+    <input type="number" step="0.01" id="input-share-bales" placeholder="bales">
+    <span class="ledger-feedback" id="feedback-share-bales"></span>
+  </div>
+  <div class="ledger-row" id="row-share-value">
+    <label>2. Dollar value of that share (bales &times; $45):</label>
+    <input type="number" step="0.01" id="input-share-value" placeholder="$">
+    <span class="ledger-feedback" id="feedback-share-value"></span>
+  </div>
+  <div class="ledger-row" id="row-ginning-fee">
+    <label>3. Ginning fee owed (1/18 of the share's value):</label>
+    <input type="number" step="0.01" id="input-ginning-fee" placeholder="$">
+    <span class="ledger-feedback" id="feedback-ginning-fee"></span>
+  </div>
+  <div class="ledger-row" id="row-balance">
+    <label>4. Final balance (share value &minus; ginning fee &minus; $150 store credit):</label>
+    <input type="number" step="0.01" id="input-balance" placeholder="$ (use a minus sign if negative)">
+    <span class="ledger-feedback" id="feedback-balance"></span>
+  </div>
+
+  <button onclick="checkLedger()">Check my math</button>
+  <div id="ledger-result"></div>
+</div>
+
+<div class="guided-block">
+  <div class="guided-question"><strong>Guiding question:</strong> This family worked all year and brought in a full harvest — no drought, no disaster. Why did they still end the year owing money? Use a specific number from your ledger.</div>
+  <textarea class="small" id="answer-ledger" placeholder="Your answer..."></textarea>
+  <div class="try-first-note">Complete the ledger above first — the check button unlocks after a few sentences here.</div>
+  <button id="checkbtn-ledger" onclick="checkGuided('ledger','The Ledger','LEDGER','Why did this family end the year in debt despite a full harvest, using a specific number?')">Check my understanding</button>
+  <div class="helper-panel" id="feedback-ledger-reflect" style="display:none;"></div>
+</div>
+
+<!-- ============ DOCUMENT 3: WPA NARRATIVE ============ -->
+<h2>Document 3: A Sharecropper's Own Words</h2>
+<div class="doc-meta">James Lucas, born 1833, Adams County, Mississippi. Interviewed in the 1930s as part of the WPA Federal Writers' Project — a first-person account recorded decades after emancipation. Public domain (U.S. federal government work).</div>
+<p style="font-family:Arial, sans-serif; font-size:0.88rem;">Highlight the same way as above.</p>
+<button class="highlight-btn green" onclick="applyHighlight('green')">Highlight: Claimed</button>
+<button class="highlight-btn red" onclick="applyHighlight('red')">Highlight: Denied/Blocked</button>
+<button onclick="applyHighlight(null)">Clear highlight</button>
+
+<div class="source-text" id="doc-narrative" contenteditable="true" spellcheck="false">
+<p>"[Sharecropping] wuzn't much different from slavery. We lived in quarters, used de white folks' horses and ploughs and helped raise our own food. We just change a marster for a boss."</p>
+</div>
+
+<div class="guided-block">
+  <div class="guided-question"><strong>Guiding question:</strong> James Lucas says sharecropping "wuzn't much different from slavery." Using your ledger from Document 2 as evidence, explain one specific way the economics of the system back up his claim.</div>
+  <textarea class="small" id="answer-narrative" placeholder="Your answer..."></textarea>
+  <div class="try-first-note">Write your own answer first — the check button unlocks after a few sentences.</div>
+  <button id="checkbtn-narrative" onclick="checkGuided('narrative','James Lucas Narrative','doc-narrative','What specific economic evidence from the ledger backs up his claim?')">Check my understanding</button>
+  <div class="helper-panel" id="feedback-narrative" style="display:none;"></div>
+</div>
+
+<h3>Other notes on this document (optional, just for you)</h3>
+<textarea class="notes-box" id="other-notes-narrative" placeholder="Anything else you want to jot down..."></textarea>
+
+<!-- ============ DOCUMENT 4: HUGHES POEM ============ -->
+<h2>Document 4: "I, Too" — Langston Hughes (1926)</h2>
+<div class="doc-meta">Public domain (published 1926). Hughes wrote this decades after Reconstruction, but the promise-vs-reality gap it describes is the same one this unit has been tracing since Day 2.</div>
+
+<div class="source-text" id="doc-poem" contenteditable="true" spellcheck="false">
+<p>I, too, sing America.<br>
+I am the darker brother.<br>
+They send me to eat in the kitchen<br>
+When company comes,<br>
+But I laugh,<br>
+And eat well,<br>
+And grow strong.</p>
+<p>Tomorrow,<br>
+I'll be at the table<br>
+When company comes.<br>
+Nobody'll dare<br>
+Say to me,<br>
+"Eat in the kitchen,"<br>
+Then.</p>
+<p>Besides,<br>
+They'll see how beautiful I am<br>
+And be ashamed&#8212;</p>
+<p>I, too, am America.</p>
+</div>
+
+<div class="guided-block">
+  <div class="guided-question"><strong>Guiding question:</strong> Hughes writes "Tomorrow, I'll be at the table" — not today. Connect this poem back to the 85% statistic and your ledger. What "table" is he talking about, and how far away was it in 1882?</div>
+  <textarea class="small" id="answer-poem" placeholder="Your answer..."></textarea>
+  <div class="try-first-note">Write your own answer first — the check button unlocks after a few sentences.</div>
+  <button id="checkbtn-poem" onclick="checkGuided('poem','I Too — Langston Hughes','doc-poem','What table is Hughes talking about, and how far away was it in 1882?')">Check my understanding</button>
+  <div class="helper-panel" id="feedback-poem" style="display:none;"></div>
+</div>
+
+<!-- ============ VOCAB + SYNTHESIS ============ -->
+<h2>Vocabulary</h2>
+<p style="font-family:Arial, sans-serif; font-size:0.88rem;">Click a word to see its definition. Use at least half of these in your Analysis below — used words turn green automatically.</p>
+<div class="vocab-checklist" id="vocab-checklist"></div>
+<div class="vocab-definition" id="vocab-definition"></div>
+<div class="vocab-status" id="vocab-status"></div>
+
+<h2>Your Analysis</h2>
+<p style="font-family:Arial, sans-serif; font-size:0.95rem;">
+  Answer SQ2: how did the economic changes of post-Reconstruction impact African Americans under a system
+  like sharecropping? Use evidence from at least two of today's four documents (the contract, your ledger,
+  the narrative, the poem).
+</p>
+<textarea class="big" id="main-response" placeholder="Your analysis..."></textarea>
+<div class="try-first-note">Write your own draft first — the check button unlocks after a bit more writing.</div>
+<button id="checkbtn-analysis" onclick="checkAnalysis()">Check my reasoning so far</button>
+<div class="helper-panel" id="feedback-analysis" style="display:none;"></div>
+
+<div style="margin-top: 20px;">
+  <button class="primary" onclick="submitWork()">Submit for feedback</button>
+  <button onclick="downloadWork()">Download my work as PDF</button>
+</div>
+<div id="completion-area"></div>
+<div class="save-indicator" id="opening-save-status"></div>
+<div class="paste-warning" id="paste-warning" style="display:none;">Pasting is disabled here — type your own thinking.</div>
+
+<div id="print-summary"></div>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMzGknPWuqh7GMiIy22KVrCZvLvol0I8Nh_ap_V73MvENF1jYZxCpN-HhtkWHTsg7V/exec';
+const SHARED_SECRET = '1ufJjrtm4LFZ5naTN3xILg933mF9Ygl5';
+
+const VOCAB_LIST = [
+  { term: 'sharecropping', label: 'Sharecropping', definition: "A farming system where a tenant works someone else's land in exchange for a share of the crop instead of wages." },
+  { term: 'debt-peonage', label: 'Debt-Peonage', definition: "Being forced to keep working for someone because you owe them money you can't pay off." },
+  { term: 'exploitation', label: 'Exploitation', definition: 'Using someone unfairly for your own benefit, especially their labor.' },
+  { term: 'systemic', label: 'Systemic', definition: "Built into the whole system itself, not just one person's bad choice." },
+  { term: 'inequity', label: 'Inequity', definition: 'Unfairness, especially unequal treatment baked into rules or structures.' },
+  { term: 'disenfranchisement', label: 'Disenfranchisement', definition: 'Being stripped of rights or power, especially the right to vote or act freely.' }
+];
+const VOCAB_REQUIRED = Math.ceil(VOCAB_LIST.length * 0.5); // 3 of 6
+const GUIDED_KEYS = ['contract', 'ledger', 'narrative', 'poem'];
+const MAX_CHECK_ATTEMPTS = 3;
+
+// Correct ledger values
+const LEDGER_ANSWERS = {
+  'share-bales': 3,
+  'share-value': 135,
+  'ginning-fee': 7.5,
+  'balance': -22.5
+};
+const LEDGER_TOLERANCE = 0.5;
+
+let struggleLevels = {};
+let guidedAttempts = {};
+let ledgerCorrectState = {};
+
+// ---------- Vocabulary checklist ----------
+function renderVocabChecklist(usedTerms) {
+  const container = document.getElementById('vocab-checklist');
+  container.innerHTML = '';
+  VOCAB_LIST.forEach(v => {
+    const chip = document.createElement('span');
+    chip.className = 'vocab-chip' + (usedTerms.includes(v.term) ? ' used' : '');
+    chip.textContent = v.label;
+    chip.setAttribute('role', 'button');
+    chip.setAttribute('tabindex', '0');
+    chip.onclick = () => showDefinition(v.term);
+    chip.onkeypress = (e) => { if (e.key === 'Enter' || e.key === ' ') showDefinition(v.term); };
+    container.appendChild(chip);
+  });
+  document.getElementById('vocab-status').textContent =
+    usedTerms.length + ' of ' + VOCAB_REQUIRED + ' required vocabulary words used.';
+}
+
+function showDefinition(term) {
+  const box = document.getElementById('vocab-definition');
+  const entry = VOCAB_LIST.find(v => v.term === term);
+  if (!entry) return;
+  if (box.classList.contains('show') && box.dataset.term === term) {
+    box.classList.remove('show');
+    box.dataset.term = '';
+    return;
+  }
+  box.innerHTML = '<strong>' + entry.label + ':</strong> ' + entry.definition;
+  box.dataset.term = term;
+  box.classList.add('show');
+}
+
+function getUsedVocab() {
+  const text = document.getElementById('main-response').value.toLowerCase();
+  return VOCAB_LIST.filter(v => text.includes(v.term)).map(v => v.term);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderVocabChecklist([]);
+  document.getElementById('main-response').addEventListener('input', () => {
+    renderVocabChecklist(getUsedVocab());
+  });
+});
+
+// ---------- "Try first" enforcement ----------
+function wireTryFirst(inputId, buttonId, minChars) {
+  const input = document.getElementById(inputId);
+  const btn = document.getElementById(buttonId);
+  if (!input || !btn) return;
+  const update = () => { btn.disabled = input.value.trim().length < minChars; };
+  update();
+  input.addEventListener('input', update);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  wireTryFirst('answer-contract', 'checkbtn-contract', 15);
+  wireTryFirst('answer-ledger', 'checkbtn-ledger', 15);
+  wireTryFirst('answer-narrative', 'checkbtn-narrative', 15);
+  wireTryFirst('answer-poem', 'checkbtn-poem', 15);
+  wireTryFirst('main-response', 'checkbtn-analysis', 40);
+  wireTryFirst('question-contract', 'ask-contract-btn', 8);
+});
+
+// ---------- Paste blocking ----------
+['main-response', 'other-notes-contract', 'other-notes-narrative',
+ 'answer-contract', 'answer-ledger', 'answer-narrative', 'answer-poem'].forEach(id => {
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('paste', function (e) {
+      e.preventDefault();
+      const warn = document.getElementById('paste-warning');
+      if (warn) { warn.style.display = 'block'; setTimeout(() => { warn.style.display = 'none'; }, 2500); }
+    });
+    el.addEventListener('contextmenu', e => e.preventDefault());
+  });
+});
+
+// ---------- Highlighting (contenteditable, typing blocked, formatting allowed) ----------
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.source-text[contenteditable="true"]').forEach(el => {
+    el.addEventListener('beforeinput', function (e) {
+      if (e.inputType && (e.inputType.startsWith('insert') || e.inputType.startsWith('delete'))) {
+        e.preventDefault();
+      }
+    });
+    el.addEventListener('paste', e => e.preventDefault());
+  });
+});
+
+function applyHighlight(color) {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0 || sel.toString().trim() === '') {
+    alert('Select some text in one of the documents first.');
+    return;
+  }
+  const anchorNode = sel.anchorNode;
+  const container = anchorNode && anchorNode.nodeType === 3 ? anchorNode.parentElement : anchorNode;
+  const validParent = container && container.closest('.source-text[contenteditable="true"]');
+  if (!validParent) { alert('Select text inside one of the documents above.'); return; }
+
+  if (color === null) {
+    document.execCommand('hiliteColor', false, 'transparent');
+  } else {
+    const cssColor = color === 'green' ? '#cfead0' : '#f3d2ce';
+    document.execCommand('hiliteColor', false, cssColor);
+  }
+  scheduleAutoSave();
+}
+
+function countHighlights() {
+  let total = 0;
+  document.querySelectorAll('.source-text[contenteditable="true"]').forEach(el => {
+    total += (el.innerHTML.match(/background-color/g) || []).length;
+  });
+  return total;
+}
+
+function collectHighlights() {
+  const map = {};
+  document.querySelectorAll('.source-text[contenteditable="true"]').forEach(el => { map[el.id] = el.innerHTML; });
+  return map;
+}
+
+function restoreHighlights(map) {
+  if (!map) return;
+  Object.keys(map).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = map[id];
+  });
+}
+
+// ---------- Ledger (self-checking, deterministic — no AI call) ----------
+function checkLedgerField(fieldKey, inputId, rowId, feedbackId) {
+  const input = document.getElementById(inputId);
+  const row = document.getElementById(rowId);
+  const feedback = document.getElementById(feedbackId);
+  const val = parseFloat(input.value);
+  if (isNaN(val)) {
+    row.classList.remove('correct', 'wrong');
+    feedback.textContent = '';
+    ledgerCorrectState[fieldKey] = false;
+    return;
+  }
+  const correct = Math.abs(val - LEDGER_ANSWERS[fieldKey]) <= LEDGER_TOLERANCE;
+  row.classList.toggle('correct', correct);
+  row.classList.toggle('wrong', !correct);
+  feedback.textContent = correct ? 'Correct' : 'Try again';
+  ledgerCorrectState[fieldKey] = correct;
+}
+
+function checkLedger() {
+  checkLedgerField('share-bales', 'input-share-bales', 'row-share-bales', 'feedback-share-bales');
+  checkLedgerField('share-value', 'input-share-value', 'row-share-value', 'feedback-share-value');
+  checkLedgerField('ginning-fee', 'input-ginning-fee', 'row-ginning-fee', 'feedback-ginning-fee');
+  checkLedgerField('balance', 'input-balance', 'row-balance', 'feedback-balance');
+
+  const allCorrect = Object.keys(LEDGER_ANSWERS).every(k => ledgerCorrectState[k]);
+  const resultDiv = document.getElementById('ledger-result');
+  if (allCorrect) {
+    const balance = parseFloat(document.getElementById('input-balance').value);
+    const cls = balance < 0 ? 'negative' : 'positive';
+    const msg = balance < 0
+      ? 'Final balance: ' + balance.toFixed(2) + ' — the family ends the year owing the landowner money, despite a full harvest.'
+      : 'Final balance: ' + balance.toFixed(2) + '.';
+    resultDiv.innerHTML = '<div class="ledger-balance ' + cls + '">' + msg + '</div>';
+  } else {
+    resultDiv.innerHTML = '<div class="try-first-note">Some fields still need work — check each row above and try again.</div>';
+  }
+  scheduleAutoSave();
+}
+
+function isLedgerComplete() {
+  return Object.keys(LEDGER_ANSWERS).every(k => ledgerCorrectState[k]);
+}
+
+function collectLedgerAnswers() {
+  return {
+    shareBales: document.getElementById('input-share-bales').value,
+    shareValue: document.getElementById('input-share-value').value,
+    ginningFee: document.getElementById('input-ginning-fee').value,
+    balance: document.getElementById('input-balance').value,
+    allCorrect: isLedgerComplete()
+  };
+}
+
+function restoreLedgerAnswers(data) {
+  if (!data) return;
+  if (data.shareBales !== undefined) document.getElementById('input-share-bales').value = data.shareBales;
+  if (data.shareValue !== undefined) document.getElementById('input-share-value').value = data.shareValue;
+  if (data.ginningFee !== undefined) document.getElementById('input-ginning-fee').value = data.ginningFee;
+  if (data.balance !== undefined) document.getElementById('input-balance').value = data.balance;
+  if (data.shareBales || data.shareValue || data.ginningFee || data.balance) checkLedger();
+}
+
+// ---------- Backend calls (retry with backoff — server-busy is retryable, not a failure) ----------
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+async function callBackend(action, extra, options) {
+  const opts = options || {};
+  const studentId = document.getElementById('student-id').value.trim();
+  if (!studentId) { alert('Enter your name first.'); return null; }
+  const body = Object.assign({ secret: SHARED_SECRET, action: action, studentId: studentId }, extra || {});
+  const maxRetries = opts.silent ? 4 : 3;
+  const silent = !!opts.silent;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(body)
+      });
+      const text = await res.text();
+      try {
+        return JSON.parse(text);
+      } catch (parseErr) {
+        // Non-JSON response (e.g. Apps Script busy) — retryable, not an instant failure.
+        if (attempt < maxRetries) {
+          await sleep(700 * (attempt + 1) + Math.random() * 300);
+          continue;
+        }
+        if (!silent) alert('The server is busy — please try again in a moment.');
+        return null;
+      }
+    } catch (err) {
+      if (attempt < maxRetries) {
+        await sleep(700 * (attempt + 1) + Math.random() * 300);
+        continue;
+      }
+      if (!silent) alert('The server is busy — please try again in a moment.');
+      return null;
+    }
+  }
+  return null;
+}
+
+async function askHelp(which) {
+  const label = 'Sharecropping Contract, 1882';
+  const questionInput = document.getElementById('question-contract');
+  const question = questionInput.value.trim();
+  if (!question) { alert('Type your question first.'); return; }
+
+  const panel = document.getElementById('helper-contract');
+  const attemptsSoFar = struggleLevels[which] || 0;
+  if (attemptsSoFar >= MAX_CHECK_ATTEMPTS) {
+    panel.style.display = 'block';
+    panel.innerHTML = "You've asked a few times on this document — go with your best understanding and move on. Flag it for your teacher if you're still stuck.";
+    return;
+  }
+  struggleLevels[which] = attemptsSoFar + 1;
+  panel.style.display = 'block';
+  panel.innerHTML = '<span class="locked">Thinking...</span>';
+
+  const fullText = document.getElementById('doc-contract').innerText;
+
+  const data = await callBackend('decode_help', {
+    documentLabel: label,
+    passageText: fullText.slice(0, 3000),
+    studentQuestion: question,
+    struggleLevel: struggleLevels[which]
+  });
+  if (!data) { panel.style.display = 'none'; return; }
+  panel.innerHTML = data.reply || data.error || 'No response.';
+}
+
+function guidedFeedbackElId(key) {
+  return key === 'ledger' ? 'feedback-ledger-reflect' : 'feedback-' + key;
+}
+
+async function checkGuided(key, partLabel, passageElId, questionText) {
+  const answerEl = document.getElementById('answer-' + key);
+  const panel = document.getElementById(guidedFeedbackElId(key));
+  const answer = answerEl.value.trim();
+  if (!answer) { alert('Write your answer first.'); return; }
+
+  if (key === 'ledger' && !isLedgerComplete()) {
+    alert('Finish the ledger above (all four fields correct) before checking this reflection.');
+    return;
+  }
+
+  const attemptsSoFar = guidedAttempts[key] || 0;
+  if (attemptsSoFar >= MAX_CHECK_ATTEMPTS) {
+    panel.style.display = 'block';
+    panel.innerHTML = "You've checked this a few times — go ahead and trust your answer and move on. Flag it for your teacher if you're still unsure.";
+    return;
+  }
+  guidedAttempts[key] = attemptsSoFar + 1;
+  panel.style.display = 'block';
+  panel.innerHTML = '<span class="locked">Thinking...</span>';
+
+  let passageText;
+  if (passageElId === 'LEDGER') {
+    passageText = 'Ledger result: family share = ' + LEDGER_ANSWERS['share-bales'] + ' bales ($' +
+      LEDGER_ANSWERS['share-value'] + '), ginning fee = $' + LEDGER_ANSWERS['ginning-fee'] +
+      ', store credit = $150, final balance = $' + LEDGER_ANSWERS['balance'] + '.';
+  } else {
+    passageText = document.getElementById(passageElId).innerText.slice(0, 3000);
+  }
+
+  const data = await callBackend('guided_check', {
+    partLabel: partLabel, passageText: passageText, questionText: questionText,
+    studentAnswer: answer, attemptNumber: guidedAttempts[key]
+  });
+  if (!data) { panel.style.display = 'none'; return; }
+  panel.innerHTML = data.reply || data.error || 'No response.';
+}
+
+async function checkAnalysis() {
+  const answer = document.getElementById('main-response').value.trim();
+  const panel = document.getElementById('feedback-analysis');
+  if (!answer) { alert('Write something in your Analysis box first.'); return; }
+
+  const attemptsSoFar = guidedAttempts['analysis'] || 0;
+  if (attemptsSoFar >= MAX_CHECK_ATTEMPTS) {
+    panel.style.display = 'block';
+    panel.innerHTML = "You've checked this a few times — trust your draft and finish up. Flag it for your teacher if you're still unsure.";
+    return;
+  }
+  guidedAttempts['analysis'] = attemptsSoFar + 1;
+  panel.style.display = 'block';
+  panel.innerHTML = '<span class="locked">Thinking...</span>';
+
+  const data = await callBackend('guided_check', {
+    partLabel: 'Overall Analysis (draft in progress)',
+    passageText: "N/A — this is feedback on the student's own developing argument, not a source excerpt.",
+    questionText: 'Does this response answer SQ2 using evidence from at least two of the four documents (contract, ledger, narrative, poem)?',
+    studentAnswer: answer,
+    attemptNumber: guidedAttempts['analysis']
+  });
+  if (!data) { panel.style.display = 'none'; return; }
+  panel.innerHTML = data.reply || data.error || 'No response.';
+}
+
+function getGuidedAnswers() {
+  const answers = {};
+  GUIDED_KEYS.forEach(k => {
+    const el = document.getElementById('answer-' + k);
+    if (el) answers[k] = el.value;
+  });
+  return answers;
+}
+
+function countGuidedAnswers() {
+  return GUIDED_KEYS.filter(k => {
+    const el = document.getElementById('answer-' + k);
+    return el && el.value.trim().length > 5;
+  }).length;
+}
+
+let saveTimer = null;
+function scheduleAutoSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveState, 4000); }
+['other-notes-contract', 'other-notes-narrative', 'main-response',
+ 'answer-contract', 'answer-ledger', 'answer-narrative', 'answer-poem',
+ 'input-share-bales', 'input-share-value', 'input-ginning-fee', 'input-balance'].forEach(id => {
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', scheduleAutoSave);
+  });
+});
+
+async function saveState() {
+  const status = document.getElementById('opening-save-status');
+  status.textContent = 'Saving... (will retry if needed)';
+  const data = await callBackend('save_state', collectState(), { silent: true });
+  if (data && data.saved) {
+    status.textContent = 'Saved ' + new Date().toLocaleTimeString();
+  } else {
+    status.textContent = 'Not saved yet — will keep trying as you work.';
+  }
+}
+
+function collectState() {
+  return {
+    mainResponse: document.getElementById('main-response').value,
+    highlights: collectHighlights(),
+    highlightCount: countHighlights(),
+    guidedAnswers: getGuidedAnswers(),
+    guidedAnswersCount: countGuidedAnswers(),
+    guidedAnswersTotal: GUIDED_KEYS.length,
+    ledgerAnswers: collectLedgerAnswers(),
+    ledgerComplete: isLedgerComplete(),
+    otherNotes: {
+      contract: document.getElementById('other-notes-contract').value,
+      narrative: document.getElementById('other-notes-narrative').value
+    },
+    vocabUsed: getUsedVocab(),
+    vocabList: VOCAB_LIST.map(v => v.term)
+  };
+}
+
+async function loadState() {
+  const status = document.getElementById('load-status');
+  status.textContent = 'Loading...';
+  const data = await callBackend('load_state', {});
+  if (!data || !data.found) { status.textContent = 'No saved work found yet — start typing below.'; return; }
+
+  document.getElementById('main-response').value = data.mainResponse || '';
+  restoreHighlights(data.highlights);
+  restoreLedgerAnswers(data.ledgerAnswers);
+
+  const ga = data.guidedAnswers || {};
+  GUIDED_KEYS.forEach(k => { const el = document.getElementById('answer-' + k); if (el && ga[k]) el.value = ga[k]; });
+
+  const notes = data.otherNotes || {};
+  document.getElementById('other-notes-contract').value = notes.contract || '';
+  document.getElementById('other-notes-narrative').value = notes.narrative || '';
+
+  renderVocabChecklist(getUsedVocab());
+  status.textContent = 'Work loaded.';
+}
+
+async function submitWork() {
+  if (!isLedgerComplete()) {
+    alert('Finish the ledger (all four fields correct) before submitting for feedback.');
+    return;
+  }
+  const state = collectState();
+  const submitBtn = document.querySelector('button.primary');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Getting feedback...';
+
+  const data = await callBackend('reflect_check', state);
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Submit for feedback';
+
+  const area = document.getElementById('completion-area');
+  if (!data) { area.innerHTML = ''; return; }
+  if (data.error) { area.innerHTML = '<div class="completion-box incomplete">' + data.error + '</div>'; return; }
+
+  const cls = data.complete ? 'pass' : 'incomplete';
+  const heading = data.complete ? 'Complete — nice work today.' : 'Not quite complete yet';
+  let checklistHtml = '';
+  if (!data.complete && data.checklist) {
+    checklistHtml = '<ul>';
+    if (!data.checklist.hasMainResponse) checklistHtml += '<li>Your analysis needs more detail.</li>';
+    if (!data.checklist.hasHighlights) checklistHtml += '<li>Highlight at least one phrase in a document.</li>';
+    if (!data.checklist.hasLedgerComplete) checklistHtml += '<li>Finish the ledger — all four fields need to check out correct.</li>';
+    if (!data.checklist.vocabMet) checklistHtml += '<li>Use at least ' + data.checklist.vocabRequired + ' vocabulary words (currently ' + data.checklist.vocabCount + ').</li>';
+    if (!data.checklist.hasGuidedAnswers) checklistHtml += '<li>Answer at least ' + (data.checklist.guidedTotal - 1) + ' of the ' + data.checklist.guidedTotal + ' guided questions.</li>';
+    checklistHtml += '</ul>';
+  }
+
+  let mockHtml = '';
+  if (data.mockRubric) {
+    const ev = data.mockRubric.evidence, rs = data.mockRubric.reasoning;
+    mockHtml = '<div class="mock-banner"><strong>Practice score preview</strong> — this is NOT your grade for today. ' +
+      'Your official grade today is completion (above). This preview shows how this response would land on two ' +
+      'rubric criteria, so you can see where to grow before the graded CER later in the unit.</div>' +
+      '<div class="mock-cards">' +
+        '<div class="mock-card"><h4>Use of Evidence</h4><div class="range">' + (ev ? ev.range : 'N/A') + '</div><div>' + (ev ? ev.feedback : '') + '</div>' +
+          '<div class="improve"><strong>Next step:</strong> ' + (ev ? ev.improve : '') + '</div></div>' +
+        '<div class="mock-card"><h4>Analysis and Reasoning</h4><div class="range">' + (rs ? rs.range : 'N/A') + '</div><div>' + (rs ? rs.feedback : '') + '</div>' +
+          '<div class="improve"><strong>Next step:</strong> ' + (rs ? rs.improve : '') + '</div></div>' +
+      '</div>';
+  } else if (data.feedbackGenerated === false) {
+    mockHtml = '<div class="mock-banner">Practice preview unavailable right now — your completion grade above is still recorded. Try Submit again in a minute if you want the practice preview.</div>';
+  }
+
+  area.innerHTML = '<div class="completion-box ' + cls + '"><strong>' + heading + '</strong>' + checklistHtml + '</div>' + mockHtml;
+}
+
+function downloadWork() {
+  const val = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+  const esc = s => (s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const studentId = document.getElementById('student-id').value.trim() || '(no name entered)';
+  const now = new Date().toLocaleString();
+
+  const html = `
+    <h1>Day 5: The Economics of Sharecropping — ${esc(studentId)}</h1>
+    <div class="p-label">Printed: ${now}</div>
+
+    <h2>Document 1: The Contract (with your highlights)</h2>
+    <div class="p-doc">${document.getElementById('doc-contract').innerHTML}</div>
+    <div class="p-label">Your answer</div>
+    <div class="p-block">${esc(val('answer-contract')) || '(not yet answered)'}</div>
+    <div class="p-label">Other notes</div>
+    <div class="p-block">${esc(val('other-notes-contract')) || '(none)'}</div>
+
+    <h2>Document 2: Your Ledger</h2>
+    <div class="p-block">Family's share: ${esc(val('input-share-bales'))} bales
+Dollar value: $${esc(val('input-share-value'))}
+Ginning fee: $${esc(val('input-ginning-fee'))}
+Final balance: $${esc(val('input-balance'))}</div>
+    <div class="p-label">Your reflection</div>
+    <div class="p-block">${esc(val('answer-ledger')) || '(not yet answered)'}</div>
+
+    <h2>Document 3: James Lucas Narrative (with your highlights)</h2>
+    <div class="p-doc">${document.getElementById('doc-narrative').innerHTML}</div>
+    <div class="p-label">Your answer</div>
+    <div class="p-block">${esc(val('answer-narrative')) || '(not yet answered)'}</div>
+    <div class="p-label">Other notes</div>
+    <div class="p-block">${esc(val('other-notes-narrative')) || '(none)'}</div>
+
+    <h2>Document 4: "I, Too" by Langston Hughes</h2>
+    <div class="p-label">Your answer</div>
+    <div class="p-block">${esc(val('answer-poem')) || '(not yet answered)'}</div>
+
+    <h2>Your Analysis</h2>
+    <div class="p-label">Vocabulary used: ${(getUsedVocab().map(t => VOCAB_LIST.find(v => v.term === t).label).join(', ')) || 'none yet'}</div>
+    <div class="p-block">${esc(val('main-response')) || '(not yet written)'}</div>
+
+    <h2>Feedback received</h2>
+    <div class="p-block">${document.getElementById('completion-area').innerHTML || '(not yet submitted for feedback)'}</div>
+  `;
+
+  document.getElementById('print-summary').innerHTML = html;
+  document.body.classList.add('printing');
+  window.print();
+}
+
+window.addEventListener('afterprint', () => {
+  document.body.classList.remove('printing');
+});
+</script>
+
+</body>
+</html>
