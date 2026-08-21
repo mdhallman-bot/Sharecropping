@@ -53,11 +53,12 @@
 
   .gate-section { background: var(--panel); border: 1px solid var(--gold); border-radius: 6px; padding: 18px 20px; margin: 16px 0; font-family: Arial, sans-serif; }
   .gate-section h2 { margin-top: 0; }
-  .slides-embed-wrap { position: relative; width: 100%; max-width: 800px; padding-top: 59.35%; margin: 12px 0; background: #000; border-radius: 4px; overflow: hidden; }
-  .slides-embed-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-  .gate-checkbox-row { display: flex; align-items: center; gap: 8px; margin: 12px 0; font-size: 0.95rem; }
-  .gate-checkbox-row input { width: 18px; height: 18px; }
-  #gate-continue-btn { font-size: 15px; padding: 10px 18px; }
+  .slide-viewer { position: relative; width: 100%; max-width: 800px; background: #000; border-radius: 4px; overflow: hidden; margin: 12px 0; }
+  .slide-viewer img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+  .slide-controls { display: flex; align-items: center; gap: 14px; margin: 10px 0; max-width: 800px; }
+  .slide-controls button { font-size: 15px; padding: 8px 18px; }
+  #slide-counter { font-size: 0.9rem; color: #555; min-width: 110px; text-align: center; }
+  #gate-continue-btn { font-size: 15px; padding: 10px 18px; margin-top: 8px; }
 
   .notes-box, textarea { width: 100%; min-height: 70px; font-family: inherit; font-size: 14.5px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
   textarea.big { min-height: 160px; }
@@ -144,16 +145,17 @@
 
 <div class="gate-section" id="gate-section">
   <h2>Start here: today's slides</h2>
-  <p>Enter your name above, then click through today's slides below — walk-in info, the hook, and how the tool works — before you begin.</p>
-  <div class="slides-embed-wrap">
-    <iframe src="https://docs.google.com/presentation/d/13j8LJ0t4tkBmtPMfZl7I8BjVlxmYgvD9sSivaTfsNpM/embed?start=false&amp;loop=false&amp;delayms=3000" allowfullscreen="true" title="Day 5 slides"></iframe>
+  <p>Click "Next" through all of today's slides to unlock the assignment below.</p>
+  <div class="slide-viewer">
+    <img id="slide-img" src="day5-slides/slide-1.jpg" alt="Day 5 slide 1">
   </div>
-  <div class="gate-checkbox-row">
-    <input type="checkbox" id="gate-checkbox">
-    <label for="gate-checkbox">I clicked through all of today's slides.</label>
+  <div class="slide-controls">
+    <button id="slide-prev-btn" onclick="prevSlide()" disabled>&larr; Back</button>
+    <span id="slide-counter">Slide 1 of 7</span>
+    <button id="slide-next-btn" onclick="nextSlide()">Next &rarr;</button>
   </div>
   <button id="gate-continue-btn" class="primary" disabled onclick="passGate()">Continue to today's assignment</button>
-  <div class="try-first-note" id="gate-timer-note">This button unlocks in <span id="gate-countdown">45</span>s — use that time to go through the slides above.</div>
+  <div class="try-first-note" id="gate-timer-note">Click "Next" through all 7 slides to unlock this button.</div>
 </div>
 
 <div id="main-content" style="display:none;">
@@ -483,50 +485,63 @@ function toggleFrames(id) {
   if (panel) panel.classList.toggle('open');
 }
 
-// ---------- Slides gate ----------
-const GATE_SECONDS = 45;
-let gateSecondsLeft = GATE_SECONDS;
-let gateTimerHandle = null;
+// ---------- Slides gate (native viewer — tracks actual click-through) ----------
+const TOTAL_SLIDES = 7;
+let currentSlide = 1;
+let maxSlideReached = 1;
 let gateAlreadyPassed = false;
 
-function startGateTimer() {
-  if (gateAlreadyPassed) return;
-  clearInterval(gateTimerHandle);
-  gateSecondsLeft = GATE_SECONDS;
-  const countdownEl = document.getElementById('gate-countdown');
+function renderSlide() {
+  document.getElementById('slide-img').src = 'day5-slides/slide-' + currentSlide + '.jpg';
+  document.getElementById('slide-img').alt = 'Day 5 slide ' + currentSlide;
+  document.getElementById('slide-counter').textContent = 'Slide ' + currentSlide + ' of ' + TOTAL_SLIDES;
+  document.getElementById('slide-prev-btn').disabled = currentSlide === 1;
+  document.getElementById('slide-next-btn').disabled = currentSlide === TOTAL_SLIDES;
+  updateGateButton();
+}
+
+function nextSlide() {
+  if (currentSlide < TOTAL_SLIDES) {
+    currentSlide += 1;
+    if (currentSlide > maxSlideReached) maxSlideReached = currentSlide;
+    renderSlide();
+    scheduleAutoSave();
+  }
+}
+
+function prevSlide() {
+  if (currentSlide > 1) {
+    currentSlide -= 1;
+    renderSlide();
+  }
+}
+
+function updateGateButton() {
   const btn = document.getElementById('gate-continue-btn');
-  countdownEl.textContent = gateSecondsLeft;
-  gateTimerHandle = setInterval(() => {
-    gateSecondsLeft -= 1;
-    if (gateSecondsLeft <= 0) {
-      clearInterval(gateTimerHandle);
-      document.getElementById('gate-timer-note').textContent = "You can continue whenever you're ready.";
-      btn.disabled = false;
-    } else {
-      countdownEl.textContent = gateSecondsLeft;
-    }
-  }, 1000);
+  const note = document.getElementById('gate-timer-note');
+  if (maxSlideReached >= TOTAL_SLIDES) {
+    btn.disabled = false;
+    note.textContent = 'All slides viewed — you can continue.';
+  } else {
+    btn.disabled = true;
+    note.textContent = 'Click "Next" through all ' + TOTAL_SLIDES + ' slides to unlock this button (' + maxSlideReached + ' of ' + TOTAL_SLIDES + ' reached).';
+  }
 }
 
 function passGate(skipChecks) {
   if (!skipChecks) {
     const studentId = document.getElementById('student-id').value.trim();
     if (!studentId) { alert('Enter your name at the top first.'); return; }
-    if (!document.getElementById('gate-checkbox').checked) {
-      alert('Check the box confirming you clicked through the slides first.');
-      return;
-    }
-    if (document.getElementById('gate-continue-btn').disabled) { return; }
+    if (maxSlideReached < TOTAL_SLIDES) { return; }
   }
   gateAlreadyPassed = true;
-  clearInterval(gateTimerHandle);
   document.getElementById('gate-section').style.display = 'none';
   document.getElementById('main-content').style.display = 'block';
   window.scrollTo({ top: document.getElementById('main-content').offsetTop - 20, behavior: 'smooth' });
   scheduleAutoSave();
 }
 
-document.addEventListener('DOMContentLoaded', startGateTimer);
+document.addEventListener('DOMContentLoaded', renderSlide);
 
 // ---------- Vocabulary checklist ----------
 function renderVocabChecklist(usedTerms) {
