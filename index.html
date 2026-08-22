@@ -45,6 +45,18 @@
   .vocab-preview strong { color: var(--accent); }
   .vocab-preview .vp-term { margin: 3px 0; }
 
+  .image-strip { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+  .image-strip figure { width: 150px; margin: 0; text-align: center; font-family: Arial, sans-serif; font-size: 0.72rem; color: #666; }
+  .image-strip img { width: 100%; height: 105px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; display: block; }
+  .image-strip figcaption { margin-top: 4px; line-height: 1.25; }
+
+  .feature-figure { margin: 14px 0; font-family: Arial, sans-serif; font-size: 0.8rem; color: #666; text-align: center; }
+  .feature-figure img { max-width: 100%; width: 420px; border-radius: 6px; border: 1px solid #ccc; display: block; margin: 0 auto; }
+  .feature-figure figcaption { margin-top: 6px; max-width: 420px; margin-left: auto; margin-right: auto; }
+
+  .gloss-word { border-bottom: 1px dotted #8a7b5e; cursor: help; }
+  .gloss-tooltip { position: absolute; z-index: 500; background: #2a2318; color: #fff; font-family: Arial, sans-serif; font-size: 12.5px; line-height: 1.35; padding: 6px 10px; border-radius: 4px; max-width: 220px; box-shadow: 0 2px 8px rgba(0,0,0,0.35); display: none; }
+
   .frames-toggle { background: none; border: none; color: var(--accent); text-decoration: underline; padding: 2px 0; font-size: 0.82rem; cursor: pointer; margin: 2px 0; }
   .frames-toggle:hover { background: none; color: var(--gold); }
   .frames-panel { display: none; background: #fff8e6; border: 1px dashed var(--gold); padding: 10px 14px; margin-top: 6px; font-family: Arial, sans-serif; font-size: 0.88rem; }
@@ -172,6 +184,10 @@
   Department of Archives and History.) Most were sharecroppers or tenants — the rate varied some state to
   state, but this was the rule across the South, not the exception.
 </div>
+<figure class="feature-figure">
+  <img src="day5-images/sharecropper-family-portrait.jpg" alt="A sharecropping family gathered on the porch of their home">
+  <figcaption>A sharecropping family in the rural South, early 20th century.</figcaption>
+</figure>
 <p style="font-family:Arial, sans-serif; font-size:0.95rem;">
   Today you'll read the actual contract that governed a family in that 85%, build the numbers yourself to see
   exactly how the math worked against them, then read one person's own words about living it, and a poem that
@@ -181,10 +197,36 @@
 <!-- ============ DOCUMENT 1: THE CONTRACT ============ -->
 <h2>Document 1: A Sharecropping Contract, 1882</h2>
 <div class="doc-meta">Grimes Family Papers, North Carolina, 1882. Source: Digital Inquiry Group (inquirygroup.org).</div>
+<figure class="feature-figure">
+  <img src="day5-images/original-sharecropping-contract.jpg" alt="A handwritten sharecropping contract from the period">
+  <figcaption>An original handwritten sharecropping agreement from the period — the document below follows the same format.</figcaption>
+</figure>
 <div class="vocab-preview">
   <strong>Preview these words before you read:</strong>
   <div class="vp-term"><strong>Sharecropping</strong> — a farming system where a tenant works someone else's land in exchange for a share of the crop instead of wages.</div>
   <div class="vp-term"><strong>Exploitation</strong> — using someone unfairly for your own benefit, especially their labor.</div>
+</div>
+<div class="image-strip">
+  <figure>
+    <img src="day5-images/mule-plow-team.jpg" alt="A team of mules pulling a plow">
+    <figcaption>The "mule team, plow" the landowner furnishes</figcaption>
+  </figure>
+  <figure>
+    <img src="day5-images/cotton-gin.jpg" alt="A 19th-century cotton gin machine">
+    <figcaption>A cotton gin — where cotton gets "ginned &amp; packed"</figcaption>
+  </figure>
+  <figure>
+    <img src="day5-images/split-rail-fence.jpg" alt="A wooden split-rail fence">
+    <figcaption>A split-rail fence, like the ones sharecroppers had to build and repair</figcaption>
+  </figure>
+  <figure>
+    <img src="day5-images/cotton-bale.jpg" alt="A finished cotton bale wrapped in bagging and metal ties">
+    <figcaption>A finished bale — wrapped in "bagging, ties, &amp; twine"</figcaption>
+  </figure>
+  <figure>
+    <img src="day5-images/cotton-bagging.jpg" alt="A worker dragging a large cotton sack toward a wagon">
+    <figcaption>Hauling picked cotton to be weighed and baled</figcaption>
+  </figure>
 </div>
 <p style="font-family:Arial, sans-serif; font-size:0.88rem;">Select any text, then click a color: <strong>green</strong> for something the sharecropper is promised or granted, <strong>red</strong> for something denied, restricted, or controlled by the landowner.</p>
 <button class="highlight-btn green" onclick="applyHighlight('green')">Highlight: Claimed</button>
@@ -192,10 +234,10 @@
 <button onclick="applyHighlight(null)">Clear highlight</button>
 
 <div class="source-text" id="doc-contract" contenteditable="true" spellcheck="false">
-<p>To every one applying to rent land, the following conditions must be read, and agreed to: For every 30 acres of land (rented by sharecroppers), I agree to furnish the mule team, plow, and farming implements. The sharecroppers are to have half of the cotton, corn, peas, pumpkins, and potatoes they grow if the following conditions are complied with, but&#8212;if not&#8212;they are to have only two-fifths.</p>
+<p>To every one applying to rent land, the following conditions must be read, and agreed to: For every 30 acres of land (rented by sharecroppers), I agree to <span class="gloss-word" data-def="provide or supply something needed">furnish</span> the mule team, plow, and farming implements. The sharecroppers are to have half of the cotton, corn, peas, pumpkins, and potatoes they grow if the following conditions are <span class="gloss-word" data-def="followed the rules or conditions">complied</span> with, but&#8212;if not&#8212;they are to have only two-fifths.</p>
 <p>For every mule or horse furnished by me there must be 1000 good sized rails (logs) hauled, and the fence repaired if I so direct. All sharecroppers must haul rails (logs) and work on the fence whenever I may order. The wood must be split and the fence repaired before corn is planted. No cotton must be planted by sharecroppers on their home patches of land.</p>
 <p>No sharecropper is to work off the plantation when there is any work to be done on the land he has rented, or when his work is needed by me. Every sharecropper must be responsible for all farming gear placed in his hands, and if not returned must be paid for unless it is worn out by use.</p>
-<p>Nothing can be sold from their (sharecroppers&#8217;) crops until my rent is all paid, and all amounts they owe me are paid in full. I am to gin &amp; pack all of the cotton and charge every sharecropper an eighteenth of his part, the cropper to furnish his part of the bagging, ties, &amp; twine. The sale of every sharecropper&#8217;s part of the cotton to be made by me when and where I choose to sell, and after deducting all they owe me.</p>
+<p>Nothing can be sold from their (sharecroppers&#8217;) crops until my rent is all paid, and all amounts they owe me are paid in full. I am to <span class="gloss-word" data-def="to remove seeds from cotton using a machine">gin</span> &amp; pack all of the cotton and charge every sharecropper an eighteenth of his part, the cropper to <span class="gloss-word" data-def="provide or supply something needed">furnish</span> his part of the bagging, ties, &amp; twine. The sale of every sharecropper&#8217;s part of the cotton to be made by me when and where I choose to sell, and after <span class="gloss-word" data-def="subtracting an amount from a total">deducting</span> all they owe me.</p>
 </div>
 
 <div class="focus-block">
@@ -252,6 +294,20 @@
   <div class="vp-term"><strong>Debt-Peonage</strong> — being forced to keep working for someone because you owe them money you can't pay off.</div>
   <div class="vp-term"><strong>Systemic</strong> — built into the whole system itself, not just one person's bad choice.</div>
 </div>
+<div class="image-strip">
+  <figure>
+    <img src="day5-images/plantation-store.jpg" alt="A plantation store where sharecroppers bought goods on credit">
+    <figcaption>A plantation store — where the $150 in credit came from</figcaption>
+  </figure>
+  <figure>
+    <img src="day5-images/cotton-scale.jpg" alt="Workers weighing a sack of cotton on a hanging scale">
+    <figcaption>Weighing the harvest before it's recorded</figcaption>
+  </figure>
+  <figure>
+    <img src="day5-images/sharecropper-ledger.jpg" alt="Pages from a 19th-century handwritten ledger">
+    <figcaption>A 19th-century ledger — the kind of running account you're about to build</figcaption>
+  </figure>
+</div>
 <p style="font-family:Arial, sans-serif; font-size:0.95rem;">
   Use the contract's own terms above to work out what a real family would have taken home. Each field
   checks itself — try your own math first.
@@ -265,7 +321,8 @@
       <li>At harvest, their 30 acres produced <strong>6 bales of cotton</strong> (a bale = 500 lbs).</li>
       <li>Cotton was selling for about <strong>$45 per bale</strong> in 1882.</li>
       <li>Per the contract, the landowner's gin charges <strong>1/18 of the sharecropper's part</strong> for ginning and packing.</li>
-      <li>Over the year, the family bought food, cloth, and tool repairs on credit from the plantation store: <strong>$150</strong> total.</li>
+      <li>Over the year, the family bought food and clothing on credit from the plantation store: <strong>$110</strong>.</li>
+      <li>The contract also requires the cropper to furnish bagging, ties, and twine, plus tool repairs — bought on credit too: <strong>$40</strong>.</li>
     </ul>
   </div>
 
@@ -284,9 +341,19 @@
     <input type="number" step="0.01" id="input-ginning-fee" placeholder="$">
     <span class="ledger-feedback" id="feedback-ginning-fee"></span>
   </div>
+  <div class="ledger-row" id="row-personal-expenses">
+    <label>4. Personal expenses on store credit — food &amp; clothing:</label>
+    <input type="number" step="0.01" id="input-personal-expenses" placeholder="$">
+    <span class="ledger-feedback" id="feedback-personal-expenses"></span>
+  </div>
+  <div class="ledger-row" id="row-business-costs">
+    <label>5. Business costs on store credit — bagging, ties, twine &amp; tool repairs:</label>
+    <input type="number" step="0.01" id="input-business-costs" placeholder="$">
+    <span class="ledger-feedback" id="feedback-business-costs"></span>
+  </div>
   <div class="ledger-row" id="row-balance">
-    <label>4. Final balance (share value &minus; ginning fee &minus; $150 store credit):</label>
-    <input type="number" step="0.01" id="input-balance" placeholder="$ (use a minus sign if negative)">
+    <label>6. Yearly ending balance (share value &minus; ginning fee &minus; personal expenses &minus; business costs):</label>
+    <input type="number" step="0.01" id="input-balance" placeholder="$ (use a minus sign if negative, no dollar sign)">
     <span class="ledger-feedback" id="feedback-balance"></span>
   </div>
 
@@ -307,6 +374,19 @@
   <div class="helper-panel" id="feedback-ledger-reflect" style="display:none;"></div>
 </div>
 
+<div class="guided-block">
+  <div class="guided-question"><strong>Guiding question:</strong> The contract says nothing can be sold from the sharecropper's crop until every debt owed to the landowner is paid in full. If this family had the exact same harvest every year, what would their situation look like after 5 years? Could they simply leave and go work somewhere else?</div>
+  <textarea class="small" id="answer-ledger2" placeholder="Your answer..."></textarea>
+  <div class="try-first-note">Write your own answer first — the check button unlocks after a few sentences.</div>
+  <button type="button" class="frames-toggle" onclick="toggleFrames('frames-ledger2')">Need a sentence starter?</button>
+  <div class="frames-panel" id="frames-ledger2">
+    <p>"After 5 years of the same result, the family would ___."</p>
+    <p>"They could not simply leave because the contract says ___, and the debt only ___ each year instead of shrinking."</p>
+  </div>
+  <button id="checkbtn-ledger2" onclick="checkGuided('ledger2','The Ledger — Over Time','LEDGER','After 5 identical years, what happens to the family, and could they leave?')">Check my understanding</button>
+  <div class="helper-panel" id="feedback-ledger2" style="display:none;"></div>
+</div>
+
 <!-- ============ DOCUMENT 3: WPA NARRATIVE ============ -->
 <h2>Document 3: A Sharecropper's Own Words</h2>
 <div class="doc-meta">James Lucas, born 1833, Adams County, Mississippi. Interviewed in the 1930s as part of the WPA Federal Writers' Project — a first-person account recorded decades after emancipation. Public domain (U.S. federal government work).</div>
@@ -315,13 +395,23 @@
   <div class="vp-term"><strong>Inequity</strong> — unfairness, especially unequal treatment baked into rules or structures.</div>
   <div class="vp-term"><strong>Exploitation</strong> — using someone unfairly for your own benefit, especially their labor.</div>
 </div>
+<div class="image-strip">
+  <figure>
+    <img src="day5-images/sharecropper-cabin.jpg" alt="A wooden sharecropper's cabin">
+    <figcaption>A sharecropper's cabin — the "quarters" James Lucas describes</figcaption>
+  </figure>
+  <figure>
+    <img src="day5-images/wpa-interview-Rose-Holeman.jpg" alt="An elderly woman seated on a porch, photographed for a WPA interview">
+    <figcaption>A WPA Federal Writers' Project interview subject (not James Lucas) — this is what those interviews looked like</figcaption>
+  </figure>
+</div>
 <p style="font-family:Arial, sans-serif; font-size:0.88rem;">Highlight the same way as above.</p>
 <button class="highlight-btn green" onclick="applyHighlight('green')">Highlight: Claimed</button>
 <button class="highlight-btn red" onclick="applyHighlight('red')">Highlight: Denied/Blocked</button>
 <button onclick="applyHighlight(null)">Clear highlight</button>
 
 <div class="source-text" id="doc-narrative" contenteditable="true" spellcheck="false">
-<p>"[Sharecropping] wuzn't much different from slavery. We lived in quarters, used de white folks' horses and ploughs and helped raise our own food. We just change a marster for a boss."</p>
+<p>"[Sharecropping] <span class="gloss-word" data-def="old-fashioned way of writing 'wasn't'">wuzn't</span> much different from slavery. We lived in quarters, used <span class="gloss-word" data-def="old-fashioned way of writing 'the'">de</span> white folks' horses and ploughs and helped raise our own food. We just change a <span class="gloss-word" data-def="old-fashioned way of writing 'master'">marster</span> for a boss."</p>
 </div>
 
 <div class="guided-block">
@@ -348,19 +438,23 @@
   <div class="vp-term"><strong>Disenfranchisement</strong> — being stripped of rights or power, especially the right to vote or act freely.</div>
   <div class="vp-term"><strong>Inequity</strong> — unfairness, especially unequal treatment baked into rules or structures.</div>
 </div>
+<figure class="feature-figure">
+  <img src="day5-images/langston-hughes.jpg" alt="Portrait of Langston Hughes">
+  <figcaption>Langston Hughes, author of "I, Too" (1926).</figcaption>
+</figure>
 
 <div class="source-text" id="doc-poem" contenteditable="true" spellcheck="false">
 <p>I, too, sing America.<br>
 I am the darker brother.<br>
 They send me to eat in the kitchen<br>
-When company comes,<br>
+When <span class="gloss-word" data-def="guests visiting your home (not a business)">company</span> comes,<br>
 But I laugh,<br>
 And eat well,<br>
 And grow strong.</p>
 <p>Tomorrow,<br>
 I'll be at the table<br>
-When company comes.<br>
-Nobody'll dare<br>
+When <span class="gloss-word" data-def="guests visiting your home (not a business)">company</span> comes.<br>
+Nobody'll <span class="gloss-word" data-def="have the courage to do something risky">dare</span><br>
 Say to me,<br>
 "Eat in the kitchen,"<br>
 Then.</p>
@@ -451,7 +545,7 @@ const VOCAB_LIST = [
   { term: 'disenfranchisement', label: 'Disenfranchisement', definition: 'Being stripped of rights or power, especially the right to vote or act freely.' }
 ];
 const VOCAB_REQUIRED = Math.ceil(VOCAB_LIST.length * 0.5); // 3 of 6
-const GUIDED_KEYS = ['contract', 'ledger', 'narrative', 'poem'];
+const GUIDED_KEYS = ['contract', 'ledger', 'ledger2', 'narrative', 'poem'];
 const FOCUS_CONTRACT_KEYS = ['focus-contract-1', 'focus-contract-2', 'focus-contract-3', 'focus-contract-4', 'focus-contract-5'];
 const FOCUS_POEM_KEYS = ['focus-poem-1', 'focus-poem-2', 'focus-poem-3', 'focus-poem-4'];
 const MAX_CHECK_ATTEMPTS = 3;
@@ -471,8 +565,19 @@ const LEDGER_ANSWERS = {
   'share-bales': 3,
   'share-value': 135,
   'ginning-fee': 7.5,
+  'personal-expenses': 110,
+  'business-costs': 40,
   'balance': -22.5
 };
+// Maps each ledger field key to its input/row/feedback element IDs
+const LEDGER_FIELDS = [
+  { key: 'share-bales', input: 'input-share-bales', row: 'row-share-bales', feedback: 'feedback-share-bales' },
+  { key: 'share-value', input: 'input-share-value', row: 'row-share-value', feedback: 'feedback-share-value' },
+  { key: 'ginning-fee', input: 'input-ginning-fee', row: 'row-ginning-fee', feedback: 'feedback-ginning-fee' },
+  { key: 'personal-expenses', input: 'input-personal-expenses', row: 'row-personal-expenses', feedback: 'feedback-personal-expenses' },
+  { key: 'business-costs', input: 'input-business-costs', row: 'row-business-costs', feedback: 'feedback-business-costs' },
+  { key: 'balance', input: 'input-balance', row: 'row-balance', feedback: 'feedback-balance' }
+];
 const LEDGER_TOLERANCE = 0.5;
 
 let struggleLevels = {};
@@ -599,6 +704,7 @@ function wireTryFirst(inputId, buttonId, minChars) {
 document.addEventListener('DOMContentLoaded', () => {
   wireTryFirst('answer-contract', 'checkbtn-contract', 15);
   wireTryFirst('answer-ledger', 'checkbtn-ledger', 15);
+  wireTryFirst('answer-ledger2', 'checkbtn-ledger2', 15);
   wireTryFirst('answer-narrative', 'checkbtn-narrative', 15);
   wireTryFirst('answer-poem', 'checkbtn-poem', 15);
   wireTryFirst('main-response', 'checkbtn-analysis', 40);
@@ -607,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ---------- Paste blocking ----------
 ['main-response', 'other-notes-contract', 'other-notes-narrative',
- 'answer-contract', 'answer-ledger', 'answer-narrative', 'answer-poem',
+ 'answer-contract', 'answer-ledger', 'answer-ledger2', 'answer-narrative', 'answer-poem',
  'focus-contract-1', 'focus-contract-2', 'focus-contract-3', 'focus-contract-4', 'focus-contract-5',
  'focus-poem-1', 'focus-poem-2', 'focus-poem-3', 'focus-poem-4'].forEach(id => {
   document.addEventListener('DOMContentLoaded', () => {
@@ -621,6 +727,48 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('contextmenu', e => e.preventDefault());
   });
 });
+
+// ---------- Hover/tap glossary (dotted-underline words, definitions on demand) ----------
+let glossTooltipEl = null;
+function ensureGlossTooltip() {
+  if (!glossTooltipEl) {
+    glossTooltipEl = document.createElement('div');
+    glossTooltipEl.className = 'gloss-tooltip';
+    document.body.appendChild(glossTooltipEl);
+  }
+  return glossTooltipEl;
+}
+function showGloss(el) {
+  const tip = ensureGlossTooltip();
+  tip.textContent = el.getAttribute('data-def');
+  tip.style.display = 'block';
+  const rect = el.getBoundingClientRect();
+  const top = rect.bottom + window.scrollY + 4;
+  let left = rect.left + window.scrollX;
+  const maxLeft = window.scrollX + document.documentElement.clientWidth - 230;
+  if (left > maxLeft) left = Math.max(8, maxLeft);
+  tip.style.top = top + 'px';
+  tip.style.left = left + 'px';
+  tip.dataset.forEl = '';
+}
+function hideGloss() {
+  if (glossTooltipEl) glossTooltipEl.style.display = 'none';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.gloss-word').forEach(el => {
+    el.addEventListener('mouseenter', () => showGloss(el));
+    el.addEventListener('mouseleave', hideGloss);
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const tip = ensureGlossTooltip();
+      const alreadyOpenForThis = tip.style.display === 'block' && tip.textContent === el.getAttribute('data-def');
+      if (alreadyOpenForThis) { hideGloss(); } else { showGloss(el); }
+    });
+  });
+});
+document.addEventListener('click', hideGloss);
+document.addEventListener('scroll', hideGloss, true);
 
 // ---------- Highlighting (contenteditable, typing blocked, formatting allowed) ----------
 document.addEventListener('DOMContentLoaded', () => {
@@ -677,11 +825,16 @@ function restoreHighlights(map) {
 }
 
 // ---------- Ledger (self-checking, deterministic — no AI call) ----------
+function sanitizeLedgerInput(raw) {
+  // Strip $ and commas so "$135", "-$22.50", or "1,350" don't silently parse as NaN.
+  return String(raw || '').replace(/[$,\s]/g, '');
+}
+
 function checkLedgerField(fieldKey, inputId, rowId, feedbackId) {
   const input = document.getElementById(inputId);
   const row = document.getElementById(rowId);
   const feedback = document.getElementById(feedbackId);
-  const val = parseFloat(input.value);
+  const val = parseFloat(sanitizeLedgerInput(input.value));
   if (isNaN(val)) {
     row.classList.remove('correct', 'wrong');
     feedback.textContent = '';
@@ -695,29 +848,36 @@ function checkLedgerField(fieldKey, inputId, rowId, feedbackId) {
   ledgerCorrectState[fieldKey] = correct;
 }
 
-function checkLedger() {
-  checkLedgerField('share-bales', 'input-share-bales', 'row-share-bales', 'feedback-share-bales');
-  checkLedgerField('share-value', 'input-share-value', 'row-share-value', 'feedback-share-value');
-  checkLedgerField('ginning-fee', 'input-ginning-fee', 'row-ginning-fee', 'feedback-ginning-fee');
-  checkLedgerField('balance', 'input-balance', 'row-balance', 'feedback-balance');
+const LEDGER_ROW_LABELS = {
+  'share-bales': 'Row 1 (share in bales)',
+  'share-value': 'Row 2 (dollar value of share)',
+  'ginning-fee': 'Row 3 (ginning fee)',
+  'personal-expenses': 'Row 4 (personal expenses)',
+  'business-costs': 'Row 5 (business costs)',
+  'balance': 'Row 6 (yearly ending balance)'
+};
 
-  const allCorrect = Object.keys(LEDGER_ANSWERS).every(k => ledgerCorrectState[k]);
+function checkLedger() {
+  LEDGER_FIELDS.forEach(f => checkLedgerField(f.key, f.input, f.row, f.feedback));
+
+  const allCorrect = isLedgerComplete();
   const resultDiv = document.getElementById('ledger-result');
   if (allCorrect) {
-    const balance = parseFloat(document.getElementById('input-balance').value);
+    const balance = parseFloat(sanitizeLedgerInput(document.getElementById('input-balance').value));
     const cls = balance < 0 ? 'negative' : 'positive';
     const msg = balance < 0
-      ? 'Final balance: ' + balance.toFixed(2) + ' — the family ends the year owing the landowner money, despite a full harvest.'
-      : 'Final balance: ' + balance.toFixed(2) + '.';
+      ? 'Yearly ending balance: ' + balance.toFixed(2) + ' — the family ends the year owing the landowner money, despite a full harvest.'
+      : 'Yearly ending balance: ' + balance.toFixed(2) + '.';
     resultDiv.innerHTML = '<div class="ledger-balance ' + cls + '">' + msg + '</div>';
   } else {
-    resultDiv.innerHTML = '<div class="try-first-note">Some fields still need work — check each row above and try again.</div>';
+    const stillWrong = LEDGER_FIELDS.filter(f => !ledgerCorrectState[f.key]).map(f => LEDGER_ROW_LABELS[f.key]);
+    resultDiv.innerHTML = '<div class="try-first-note">Still need work on: ' + stillWrong.join(', ') + '.</div>';
   }
   scheduleAutoSave();
 }
 
 function isLedgerComplete() {
-  return Object.keys(LEDGER_ANSWERS).every(k => ledgerCorrectState[k]);
+  return LEDGER_FIELDS.every(f => ledgerCorrectState[f.key]);
 }
 
 function collectLedgerAnswers() {
@@ -725,6 +885,8 @@ function collectLedgerAnswers() {
     shareBales: document.getElementById('input-share-bales').value,
     shareValue: document.getElementById('input-share-value').value,
     ginningFee: document.getElementById('input-ginning-fee').value,
+    personalExpenses: document.getElementById('input-personal-expenses').value,
+    businessCosts: document.getElementById('input-business-costs').value,
     balance: document.getElementById('input-balance').value,
     allCorrect: isLedgerComplete()
   };
@@ -735,6 +897,8 @@ function restoreLedgerAnswers(data) {
   if (data.shareBales !== undefined) document.getElementById('input-share-bales').value = data.shareBales;
   if (data.shareValue !== undefined) document.getElementById('input-share-value').value = data.shareValue;
   if (data.ginningFee !== undefined) document.getElementById('input-ginning-fee').value = data.ginningFee;
+  if (data.personalExpenses !== undefined) document.getElementById('input-personal-expenses').value = data.personalExpenses;
+  if (data.businessCosts !== undefined) document.getElementById('input-business-costs').value = data.businessCosts;
   if (data.balance !== undefined) document.getElementById('input-balance').value = data.balance;
   if (data.shareBales || data.shareValue || data.ginningFee || data.balance) checkLedger();
 }
@@ -820,8 +984,8 @@ async function checkGuided(key, partLabel, passageElId, questionText) {
   const answer = answerEl.value.trim();
   if (!answer) { alert('Write your answer first.'); return; }
 
-  if (key === 'ledger' && !isLedgerComplete()) {
-    alert('Finish the ledger above (all four fields correct) before checking this reflection.');
+  if ((key === 'ledger' || key === 'ledger2') && !isLedgerComplete()) {
+    alert('Finish the ledger above (all six fields correct) before checking this reflection.');
     return;
   }
 
@@ -839,7 +1003,10 @@ async function checkGuided(key, partLabel, passageElId, questionText) {
   if (passageElId === 'LEDGER') {
     passageText = 'Ledger result: family share = ' + LEDGER_ANSWERS['share-bales'] + ' bales ($' +
       LEDGER_ANSWERS['share-value'] + '), ginning fee = $' + LEDGER_ANSWERS['ginning-fee'] +
-      ', store credit = $150, final balance = $' + LEDGER_ANSWERS['balance'] + '.';
+      ', personal expenses (food/clothing) = $' + LEDGER_ANSWERS['personal-expenses'] +
+      ', business costs (bagging/ties/twine/tools) = $' + LEDGER_ANSWERS['business-costs'] +
+      ', yearly ending balance = $' + LEDGER_ANSWERS['balance'] +
+      ". Per the contract, nothing can be sold from the sharecropper's crop until every debt owed to the landowner is paid in full — a negative balance carries forward into the next year.";
   } else {
     passageText = document.getElementById(passageElId).innerText.slice(0, 3000);
   }
@@ -897,8 +1064,8 @@ function countGuidedAnswers() {
 let saveTimer = null;
 function scheduleAutoSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveState, 4000); }
 ['other-notes-contract', 'other-notes-narrative', 'main-response',
- 'answer-contract', 'answer-ledger', 'answer-narrative', 'answer-poem',
- 'input-share-bales', 'input-share-value', 'input-ginning-fee', 'input-balance',
+ 'answer-contract', 'answer-ledger', 'answer-ledger2', 'answer-narrative', 'answer-poem',
+ 'input-share-bales', 'input-share-value', 'input-ginning-fee', 'input-personal-expenses', 'input-business-costs', 'input-balance',
  'focus-contract-1', 'focus-contract-2', 'focus-contract-3', 'focus-contract-4', 'focus-contract-5',
  'focus-poem-1', 'focus-poem-2', 'focus-poem-3', 'focus-poem-4'].forEach(id => {
   document.addEventListener('DOMContentLoaded', () => {
@@ -1038,9 +1205,13 @@ function downloadWork() {
     <div class="p-block">Family's share: ${esc(val('input-share-bales'))} bales
 Dollar value: $${esc(val('input-share-value'))}
 Ginning fee: $${esc(val('input-ginning-fee'))}
-Final balance: $${esc(val('input-balance'))}</div>
-    <div class="p-label">Your reflection</div>
+Personal expenses (food/clothing): $${esc(val('input-personal-expenses'))}
+Business costs (bagging/ties/twine/tools): $${esc(val('input-business-costs'))}
+Yearly ending balance: $${esc(val('input-balance'))}</div>
+    <div class="p-label">Reflection 1 — why debt despite a full harvest</div>
     <div class="p-block">${esc(val('answer-ledger')) || '(not yet answered)'}</div>
+    <div class="p-label">Reflection 2 — after 5 years</div>
+    <div class="p-block">${esc(val('answer-ledger2')) || '(not yet answered)'}</div>
 
     <h2>Document 3: James Lucas Narrative (with your highlights)</h2>
     <div class="p-doc">${document.getElementById('doc-narrative').innerHTML}</div>
